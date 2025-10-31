@@ -65,7 +65,7 @@ services:
   #   networks:
   #     - cdp-tenant
 
-  cdp-node-backend-template:
+  ahwr-message-generator-backend:
     build:
       context: .
       target: development
