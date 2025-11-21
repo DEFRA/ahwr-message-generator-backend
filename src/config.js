@@ -8,6 +8,7 @@ convict.addFormats(convictFormatWithValidator)
 
 const isProduction = process.env.NODE_ENV === 'production'
 const isTest = process.env.NODE_ENV === 'test'
+const usePrettyPrint = process.env.USE_PRETTY_PRINT === 'true'
 
 const config = convict({
   serviceVersion: {
@@ -49,6 +50,44 @@ const config = convict({
     default: 'local',
     env: 'ENVIRONMENT'
   },
+  // TODO BH 1260 fix!
+  outboundMessage: {
+    messageType: {
+      doc: 'Outbound SFD message type',
+      format: String,
+      default: 'uk.gov.ffc.ahwr.submit.sfd.message.request',
+      env: 'OUTBOUND_SFD_MESSAGE_TYPE'
+    },
+    sfdMessageTopic: {
+      doc: 'Topic name to send outbound comms to',
+      format: String,
+      default: 'fcp-fd-comms-dev',
+      env: 'SFD_MESSAGE_REQUEST_TOPIC'
+    }
+  },
+  sqs: {
+    commsRequestQueueUrl: {
+      doc: 'URL of the SQS queue to receive comms requests from',
+      format: String,
+      default: '#',
+      env: 'MESSAGE_REQUEST_QUEUE_URL'
+    }
+  },
+  aws: {
+    region: {
+      doc: 'AWS region',
+      format: String,
+      default: 'eu-west-1',
+      env: 'AWS_REGION'
+    },
+    endpointUrl: {
+      doc: 'AWS endpoint URL',
+      format: String,
+      default: null,
+      nullable: true,
+      env: 'AWS_ENDPOINT_URL'
+    }
+  },
   log: {
     isEnabled: {
       doc: 'Is logging enabled',
@@ -65,7 +104,7 @@ const config = convict({
     format: {
       doc: 'Format to output logs in',
       format: ['ecs', 'pino-pretty'],
-      default: isProduction ? 'ecs' : 'pino-pretty',
+      default: usePrettyPrint ? 'pino-pretty' : 'ecs',
       env: 'LOG_FORMAT'
     },
     redact: {
