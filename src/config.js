@@ -50,27 +50,28 @@ const config = convict({
     default: 'local',
     env: 'ENVIRONMENT'
   },
-  // TODO BH 1260 fix!
-  outboundMessage: {
-    messageType: {
-      doc: 'Outbound SFD message type',
-      format: String,
-      default: 'uk.gov.ffc.ahwr.submit.sfd.message.request',
-      env: 'OUTBOUND_SFD_MESSAGE_TYPE'
-    },
-    sfdMessageTopic: {
-      doc: 'Topic name to send outbound comms to',
-      format: String,
-      default: 'fcp-fd-comms-dev',
-      env: 'SFD_MESSAGE_REQUEST_TOPIC'
+  inboundMessage: {
+    sqs: {
+      queueUrl: {
+        doc: 'URL of the SQS queue to receive message generator requests from',
+        format: String,
+        default: '#',
+        env: 'MESSAGE_GENERATOR_QUEUE_URL'
+      }
     }
   },
-  sqs: {
-    commsRequestQueueUrl: {
-      doc: 'URL of the SQS queue to receive comms requests from',
+  outboundMessage: {
+    sfdProxyTopic: {
+      doc: 'Topic name to send SFD proxy requests to',
       format: String,
-      default: '#',
-      env: 'MESSAGE_REQUEST_QUEUE_URL'
+      default: 'ahwr_message_request',
+      env: 'SFD_PROXY_MESSAGE_TOPIC'
+    },
+    messageType: {
+      doc: 'SFD proxy requests message type',
+      format: String,
+      default: 'uk.gov.ffc.ahwr.submit.sfd.message.request',
+      env: 'SFD_PROXY_MESSAGE_TYPE'
     }
   },
   aws: {

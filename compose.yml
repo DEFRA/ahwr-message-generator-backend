@@ -57,10 +57,11 @@ services:
       AWS_ENDPOINT_URL: http://localstack:4566
       MONGO_URI: mongodb://mongodb:27017/
       USE_PRETTY_PRINT: true
-      MESSAGE_REQUEST_QUEUE_URL: "http://sqs.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_generator_queue"
+      MESSAGE_GENERATOR_QUEUE_URL: "http://sqs.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_generator_queue"
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
+      SFD_PROXY_MESSAGE_TOPIC: "http://sns.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_request"
     networks:
       - cdp-tenant
     volumes:
