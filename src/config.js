@@ -8,6 +8,7 @@ convict.addFormats(convictFormatWithValidator)
 
 const isProduction = process.env.NODE_ENV === 'production'
 const isTest = process.env.NODE_ENV === 'test'
+const usePrettyPrint = process.env.USE_PRETTY_PRINT === 'true'
 
 const config = convict({
   serviceVersion: {
@@ -49,6 +50,45 @@ const config = convict({
     default: 'local',
     env: 'ENVIRONMENT'
   },
+  inboundMessage: {
+    sqs: {
+      queueUrl: {
+        doc: 'URL of the SQS queue to receive message generator requests from',
+        format: String,
+        default: '#',
+        env: 'MESSAGE_GENERATOR_QUEUE_URL'
+      }
+    }
+  },
+  outboundMessage: {
+    sfdProxyTopic: {
+      doc: 'Topic name to send SFD proxy requests to',
+      format: String,
+      default: 'ahwr_message_request',
+      env: 'SFD_PROXY_MESSAGE_TOPIC'
+    },
+    messageType: {
+      doc: 'SFD proxy requests message type',
+      format: String,
+      default: 'uk.gov.ffc.ahwr.submit.sfd.message.request',
+      env: 'SFD_PROXY_MESSAGE_TYPE'
+    }
+  },
+  aws: {
+    region: {
+      doc: 'AWS region',
+      format: String,
+      default: 'eu-west-1',
+      env: 'AWS_REGION'
+    },
+    endpointUrl: {
+      doc: 'AWS endpoint URL',
+      format: String,
+      default: null,
+      nullable: true,
+      env: 'AWS_ENDPOINT_URL'
+    }
+  },
   log: {
     isEnabled: {
       doc: 'Is logging enabled',
@@ -65,7 +105,7 @@ const config = convict({
     format: {
       doc: 'Format to output logs in',
       format: ['ecs', 'pino-pretty'],
-      default: isProduction ? 'ecs' : 'pino-pretty',
+      default: usePrettyPrint ? 'pino-pretty' : 'ecs',
       env: 'LOG_FORMAT'
     },
     redact: {
