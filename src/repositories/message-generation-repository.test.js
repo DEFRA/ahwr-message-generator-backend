@@ -20,16 +20,47 @@ describe('message-generation repository', () => {
 
       expect(mockDb.updateMany).toHaveBeenCalledWith(
         { agreementReference: { $in: ['AHWR-123', 'IAHW-456'] } },
-        {
-          $set: {
-            'data.email': 'redacted.email@example.com',
-            'data.herdName': 'REDACTED_HERD_NAME',
-            'data.orgEmail': 'redacted.org.email@example.com',
-            'data.orgName': 'REDACTED_ORGANISATION_NAME',
-            'data.emailAddress': 'redacted.email@example.com',
-            updatedAt: expect.any(Date)
+        [
+          {
+            $set: {
+              'data.email': {
+                $cond: [
+                  { $ifNull: ['$data.email', false] },
+                  'redacted.email@example.com',
+                  '$data.email'
+                ]
+              },
+              'data.emailAddress': {
+                $cond: [
+                  { $ifNull: ['$data.emailAddress', false] },
+                  'redacted.email@example.com',
+                  '$data.emailAddress'
+                ]
+              },
+              'data.herdName': {
+                $cond: [
+                  { $ifNull: ['$data.herdName', false] },
+                  'REDACTED_HERD_NAME',
+                  '$data.herdName'
+                ]
+              },
+              'data.orgEmail': {
+                $cond: [
+                  { $ifNull: ['$data.orgEmail', false] },
+                  'redacted.org.email@example.com',
+                  '$data.orgEmail'
+                ]
+              },
+              'data.orgName': {
+                $cond: [
+                  { $ifNull: ['$data.orgName', false] },
+                  'REDACTED_ORGANISATION_NAME',
+                  '$data.orgName'
+                ]
+              }
+            }
           }
-        }
+        ]
       )
 
       expect(mockLogger.info).toHaveBeenCalledWith(

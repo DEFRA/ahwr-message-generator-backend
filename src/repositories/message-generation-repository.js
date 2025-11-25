@@ -12,19 +12,47 @@ export const redactPII = async (db, agreementReferences, logger) => {
 
   const { modifiedCount: totalUpdates } = await db
     .collection(COLLECTION)
-    .updateMany(
-      { agreementReference: { $in: agreementReferences } },
+    .updateMany({ agreementReference: { $in: agreementReferences } }, [
       {
         $set: {
-          'data.email': REDACTED_EMAIL,
-          'data.orgName': REDACTED_ORGANISATION_NAME,
-          'data.orgEmail': REDACTED_ORG_EMAIL,
-          'data.herdName': REDACTED_HERD_NAME,
-          'data.emailAddress': REDACTED_EMAIL,
-          updatedAt: new Date()
+          'data.email': {
+            $cond: [
+              { $ifNull: ['$data.email', false] },
+              REDACTED_EMAIL,
+              '$data.email'
+            ]
+          },
+          'data.orgName': {
+            $cond: [
+              { $ifNull: ['$data.orgName', false] },
+              REDACTED_ORGANISATION_NAME,
+              '$data.orgName'
+            ]
+          },
+          'data.orgEmail': {
+            $cond: [
+              { $ifNull: ['$data.orgEmail', false] },
+              REDACTED_ORG_EMAIL,
+              '$data.orgEmail'
+            ]
+          },
+          'data.herdName': {
+            $cond: [
+              { $ifNull: ['$data.herdName', false] },
+              REDACTED_HERD_NAME,
+              '$data.herdName'
+            ]
+          },
+          'data.emailAddress': {
+            $cond: [
+              { $ifNull: ['$data.emailAddress', false] },
+              REDACTED_EMAIL,
+              '$data.emailAddress'
+            ]
+          }
         }
       }
-    )
+    ])
 
   if (totalUpdates > 0) {
     logger.info(
