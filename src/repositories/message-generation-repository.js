@@ -56,11 +56,11 @@ export const redactPII = async (db, agreementReferences, logger) => {
 
   if (totalUpdates > 0) {
     logger.info(
-      `Total redacted fields across comms log entries: ${totalUpdates} for agreementReferences: ${agreementReferences}`
+      `Total redacted fields across message generation entries: ${totalUpdates} for agreementReferences: ${agreementReferences}`
     )
   } else {
     logger.info(
-      `No comms log entries updated for agreementReference: ${agreementReferences}`
+      `No message generation entries updated for agreementReference: ${agreementReferences}`
     )
   }
 }

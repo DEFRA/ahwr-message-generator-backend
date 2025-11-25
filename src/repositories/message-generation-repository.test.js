@@ -64,7 +64,7 @@ describe('message-generation repository', () => {
       )
 
       expect(mockLogger.info).toHaveBeenCalledWith(
-        'Total redacted fields across comms log entries: 2 for agreementReferences: AHWR-123,IAHW-456'
+        'Total redacted fields across message generation entries: 2 for agreementReferences: AHWR-123,IAHW-456'
       )
     })
 
@@ -75,7 +75,7 @@ describe('message-generation repository', () => {
       await redactPII(mockDb, agreementReferences, mockLogger)
 
       expect(mockLogger.info).toHaveBeenCalledWith(
-        `No comms log entries updated for agreementReference: ${agreementReferences}`
+        `No message generation entries updated for agreementReference: ${agreementReferences}`
       )
     })
   })
