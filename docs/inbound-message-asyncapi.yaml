@@ -1,0 +1,85 @@
+asyncapi: '2.6.0'
+info:
+  title: Message Generator Input
+  version: '1.0.0'
+  description: API for submitting message generator requests.
+channels:
+  ffc-ahwr-message-generator:
+    description: Channel for submitting message generator requests.
+    subscribe:
+      operationId: SubmitMessageGeneratorRequest
+      message:
+        name: SubmitMessageGeneratorRequest
+        contentType: application/json
+        payload:
+          type: object
+          required:
+            - sbi
+            - agreementReference
+            - claimReference
+            - claimStatus
+            - dateTime
+          properties:
+            crn:
+              type: string
+              description: Customer reference number.
+              pattern: '^\d{10}$'
+              nullable: true
+            sbi:
+              type: string
+              description: Nine-digit SBI identifier.
+              pattern: '^\d{9}$'
+            agreementReference:
+              type: string
+              description: Reference for the agreement.
+              minLength: 14
+              maxLength: 14
+            claimReference:
+              type: string
+              description: Reference for the claim.
+              minLength: 14
+              maxLength: 14
+            claimStatus:
+              type: integer
+              description: Claim status identifier.
+            dateTime:
+              type: string
+              description: Status change date and time.
+              format: ISO date-time
+components:
+  schemas:
+    SubmitMessageGeneratorRequest:
+      type: object
+      required:
+        - sbi
+        - agreementReference
+        - claimReference
+        - claimStatus
+        - dateTime
+      properties:
+        crn:
+          type: string
+          description: Customer reference number.
+          pattern: '^\d{10}$'
+          nullable: true
+        sbi:
+          type: string
+          description: Nine-digit SBI identifier.
+          pattern: '^\d{9}$'
+        agreementReference:
+          type: string
+          description: Reference for the agreement.
+          minLength: 14
+          maxLength: 14
+        claimReference:
+          type: string
+          description: Reference for the claim.
+          minLength: 14
+          maxLength: 14
+        claimStatus:
+          type: string
+          description: Claim status identifier.
+        dateTime:
+          type: string
+          description: Status change date and time.
+          format: ISO date-time

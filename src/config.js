@@ -51,6 +51,26 @@ const config = convict({
     env: 'ENVIRONMENT'
   },
   inboundMessage: {
+    types: {
+      documentCreated: {
+        doc: 'Messages from ahwr_document_created subscription',
+        format: String,
+        default: 'uk.gov.ffc.ahwr.document.created',
+        env: 'INBOUND_MESSAGE_DOCUMENT_CREATED'
+      },
+      statusChange: {
+        doc: 'Messages from ahwr_status_change subscription',
+        format: String,
+        default: 'uk.gov.ffc.ahwr.status.change',
+        env: 'INBOUND_MESSAGE_STATUS_CHANGE'
+      },
+      reminderRequest: {
+        doc: 'Messages from ahwr_reminder_request subscription',
+        format: String,
+        default: 'uk.gov.ffc.ahwr.reminder.request',
+        env: 'INBOUND_MESSAGE_REMINDER_REQUEST'
+      }
+    },
     sqs: {
       queueUrl: {
         doc: 'URL of the SQS queue to receive message generator requests from',
@@ -78,7 +98,7 @@ const config = convict({
     region: {
       doc: 'AWS region',
       format: String,
-      default: 'eu-west-1',
+      default: 'eu-west-2',
       env: 'AWS_REGION'
     },
     endpointUrl: {
