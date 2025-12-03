@@ -10,7 +10,7 @@ describe('processMessage', () => {
   })
 
   it('should skip processing and log message when message already been processed', async () => {
-    processMessage(mockMessage, mockLogger, mockDb)
+    await processMessage(mockMessage, mockLogger, mockDb)
 
     expect(mockLogger.info).toHaveBeenCalledWith(
       'Message has already been processed for claim being created'
