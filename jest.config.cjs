@@ -4,6 +4,8 @@ module.exports = {
   coverageDirectory: 'test-output',
   coverageReporters: ['text-summary', 'lcov'],
   coveragePathIgnorePatterns: [
+    '<rootDir>/compose/',
+    '<rootDir>/coverage/',
     '<rootDir>/node_modules/',
     '<rootDir>/test-output/',
     '<rootDir>/tests/',
