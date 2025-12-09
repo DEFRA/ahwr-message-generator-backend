@@ -74,21 +74,14 @@ describe('process evidence email message', () => {
       email: 'john.doe@gmail.com'
     })
 
-    await processInCheckStatusMessageForEvidenceEmail(
-      event,
-      mockedLogger,
-      mockDb
-    )
+    await processInCheckStatusMessageForEvidenceEmail(event, mockedLogger, mockDb)
 
     expect(getByClaimRefAndMessageType).toHaveBeenCalledWith(
       mockDb,
       'TEMP-O9UD-22F6',
       'statusChange-IN_CHECK'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'AHWR-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('AHWR-0AD3-3322', mockedLogger)
     checkEvidenceEmailSendCalled('cc-email@gmail.com', 'CC')
     checkEvidenceEmailSendCalled('willowfarm@gmail.com', 'orgEmail')
     checkEvidenceEmailSendCalled('john.doe@gmail.com', 'email')
@@ -134,21 +127,14 @@ describe('process evidence email message', () => {
     })
     config.set('notify.evidenceCarbonCopyEmailAddress', undefined)
 
-    await processInCheckStatusMessageForEvidenceEmail(
-      event,
-      mockedLogger,
-      mockDb
-    )
+    await processInCheckStatusMessageForEvidenceEmail(event, mockedLogger, mockDb)
 
     expect(getByClaimRefAndMessageType).toHaveBeenCalledWith(
       mockDb,
       'TEMP-O9UD-22F6',
       'statusChange-IN_CHECK'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'AHWR-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('AHWR-0AD3-3322', mockedLogger)
     expect(sendEvidenceEmail).toHaveBeenCalledTimes(1)
 
     expect(sendEvidenceEmail).toHaveBeenCalledWith({
@@ -199,21 +185,14 @@ describe('process evidence email message', () => {
     })
     config.set('notify.evidenceCarbonCopyEmailAddress', undefined)
 
-    await processInCheckStatusMessageForEvidenceEmail(
-      event,
-      mockedLogger,
-      mockDb
-    )
+    await processInCheckStatusMessageForEvidenceEmail(event, mockedLogger, mockDb)
 
     expect(getByClaimRefAndMessageType).toHaveBeenCalledWith(
       mockDb,
       'TEMP-O9UD-22F6',
       'statusChange-IN_CHECK'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'AHWR-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('AHWR-0AD3-3322', mockedLogger)
     expect(sendEvidenceEmail).toHaveBeenCalledTimes(1)
 
     expect(sendEvidenceEmail).toHaveBeenCalledWith({
@@ -276,11 +255,7 @@ describe('process evidence email message', () => {
       }
     })
 
-    await processInCheckStatusMessageForEvidenceEmail(
-      event,
-      mockedLogger,
-      mockDb
-    )
+    await processInCheckStatusMessageForEvidenceEmail(event, mockedLogger, mockDb)
 
     expect(mockedLogger.info).toHaveBeenCalledTimes(1)
     expect(getByClaimRefAndMessageType).toHaveBeenCalledWith(
@@ -309,11 +284,7 @@ describe('process evidence email message', () => {
 
     config.set('evidenceEmailEnabled', false)
 
-    await processInCheckStatusMessageForEvidenceEmail(
-      event,
-      mockedLogger,
-      mockDb
-    )
+    await processInCheckStatusMessageForEvidenceEmail(event, mockedLogger, mockDb)
 
     expect(mockedLogger.info).toHaveBeenCalledTimes(1)
     expect(getByClaimRefAndMessageType).toHaveBeenCalledTimes(0)

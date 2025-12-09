@@ -30,13 +30,7 @@ export async function stopSubscriber() {
   }
 }
 
-export async function handleInboundMessage(
-  message,
-  attributes,
-  types,
-  logger,
-  db
-) {
+export async function handleInboundMessage(message, attributes, types, logger, db) {
   logger.info(attributes, 'Received incoming message')
 
   switch (attributes.eventType) {

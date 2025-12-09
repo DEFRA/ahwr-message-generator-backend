@@ -1,8 +1,5 @@
 import { config } from '../config.js'
-import {
-  databaseMessageType,
-  processReminderEmailMessage
-} from './reminder-email-processor.js'
+import { databaseMessageType, processReminderEmailMessage } from './reminder-email-processor.js'
 import {
   createMessageRequestEntry,
   reminderEmailAlreadySent
@@ -120,9 +117,7 @@ describe('processReminderEmailMessage', () => {
     await processReminderEmailMessage(mockDb, message, mockLogger)
 
     expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
-    expect(mockLogger.info).toHaveBeenCalledWith(
-      'Processing reminder email message'
-    )
+    expect(mockLogger.info).toHaveBeenCalledWith('Processing reminder email message')
     expect(mockLogger.info).toHaveBeenCalledWith('Sent reminder email')
     expect(reminderEmailAlreadySent).toHaveBeenCalledTimes(1)
     expect(reminderEmailAlreadySent).toHaveBeenCalledWith(
@@ -195,9 +190,7 @@ describe('processReminderEmailMessage', () => {
     } catch (e) {
       expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
       expect(mockLogger.info).toHaveBeenCalledTimes(1)
-      expect(mockLogger.info).toHaveBeenCalledWith(
-        'Processing reminder email message'
-      )
+      expect(mockLogger.info).toHaveBeenCalledWith('Processing reminder email message')
 
       expect(reminderEmailAlreadySent).toHaveBeenCalledTimes(1)
       expect(sendSFDCommsRequest).toHaveBeenCalledTimes(1)

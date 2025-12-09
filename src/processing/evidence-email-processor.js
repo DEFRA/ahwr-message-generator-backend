@@ -7,15 +7,9 @@ import {
 } from '../repositories/message-generation-repository.js'
 import { sendEvidenceEmail } from './evidence/evidence-email.js'
 
-export const processInCheckStatusMessageForEvidenceEmail = async (
-  message,
-  logger,
-  db
-) => {
+export const processInCheckStatusMessageForEvidenceEmail = async (message, logger, db) => {
   if (!config.get('evidenceEmailEnabled')) {
-    logger.info(
-      'Skipping sending evidence email as feature flag is not enabled'
-    )
+    logger.info('Skipping sending evidence email as feature flag is not enabled')
     return
   }
   const {
@@ -33,17 +27,10 @@ export const processInCheckStatusMessageForEvidenceEmail = async (
   } = message.body
   const ccAddress = config.get('notify.evidenceCarbonCopyEmailAddress')
   const messageType = `statusChange-${claimStatus}`
-  const messageGenerate = await getByClaimRefAndMessageType(
-    db,
-    claimReference,
-    messageType
-  )
+  const messageGenerate = await getByClaimRefAndMessageType(db, claimReference, messageType)
 
   if (!messageGenerate) {
-    const contactDetails = await getLatestContactDetails(
-      agreementReference,
-      logger
-    )
+    const contactDetails = await getLatestContactDetails(agreementReference, logger)
     const { name: orgName, orgEmail, email } = contactDetails
     const requestParams = {
       agreementReference,
@@ -103,8 +90,6 @@ export const processInCheckStatusMessageForEvidenceEmail = async (
       }
     })
   } else {
-    logger.info(
-      `Message has already been processed with status: ${claimStatus}`
-    )
+    logger.info(`Message has already been processed with status: ${claimStatus}`)
   }
 }

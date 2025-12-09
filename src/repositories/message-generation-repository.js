@@ -6,11 +6,7 @@ export const createMessageRequestEntry = async (db, data) => {
   await db.collection(COLLECTION).insertOne(data)
 }
 
-export const getByClaimRefAndMessageType = (
-  db,
-  claimReference,
-  messageType
-) => {
+export const getByClaimRefAndMessageType = (db, claimReference, messageType) => {
   return db.collection(COLLECTION).findOne({
     claimReference: claimReference.toUpperCase(),
     messageType
@@ -33,12 +29,8 @@ export const reminderEmailAlreadySent = async (
 }
 
 export const redactPII = async (db, agreementReferences, logger) => {
-  const {
-    REDACTED_EMAIL,
-    REDACTED_ORGANISATION_NAME,
-    REDACTED_ORG_EMAIL,
-    REDACTED_HERD_NAME
-  } = REDACT_PII_VALUES
+  const { REDACTED_EMAIL, REDACTED_ORGANISATION_NAME, REDACTED_ORG_EMAIL, REDACTED_HERD_NAME } =
+    REDACT_PII_VALUES
 
   const { modifiedCount: totalUpdates } = await db
     .collection(COLLECTION)
@@ -46,11 +38,7 @@ export const redactPII = async (db, agreementReferences, logger) => {
       {
         $set: {
           'data.email': {
-            $cond: [
-              { $ifNull: ['$data.email', false] },
-              REDACTED_EMAIL,
-              '$data.email'
-            ]
+            $cond: [{ $ifNull: ['$data.email', false] }, REDACTED_EMAIL, '$data.email']
           },
           'data.orgName': {
             $cond: [
@@ -60,18 +48,10 @@ export const redactPII = async (db, agreementReferences, logger) => {
             ]
           },
           'data.orgEmail': {
-            $cond: [
-              { $ifNull: ['$data.orgEmail', false] },
-              REDACTED_ORG_EMAIL,
-              '$data.orgEmail'
-            ]
+            $cond: [{ $ifNull: ['$data.orgEmail', false] }, REDACTED_ORG_EMAIL, '$data.orgEmail']
           },
           'data.herdName': {
-            $cond: [
-              { $ifNull: ['$data.herdName', false] },
-              REDACTED_HERD_NAME,
-              '$data.herdName'
-            ]
+            $cond: [{ $ifNull: ['$data.herdName', false] }, REDACTED_HERD_NAME, '$data.herdName']
           },
           'data.emailAddress': {
             $cond: [

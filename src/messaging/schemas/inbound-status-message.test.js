@@ -22,9 +22,7 @@ describe('validateStatusMessageRequest', () => {
   })
 
   test('returns true if the validation is successful', () => {
-    expect(
-      validateStatusMessageRequest(mockedLogger, validInputMessage)
-    ).toBeTruthy()
+    expect(validateStatusMessageRequest(mockedLogger, validInputMessage)).toBeTruthy()
     expect(mockedLogger.error).toHaveBeenCalledTimes(0)
   })
 
@@ -109,9 +107,7 @@ describe('validateStatusMessageRequest', () => {
   test('CRN is optional, validation returns true when missing', () => {
     const stillValidMessage = { ...validInputMessage }
     delete stillValidMessage.crn
-    expect(
-      validateStatusMessageRequest(mockedLogger, stillValidMessage)
-    ).toBeTruthy()
+    expect(validateStatusMessageRequest(mockedLogger, stillValidMessage)).toBeTruthy()
     expect(mockedLogger.error).toHaveBeenCalledTimes(0)
   })
 })

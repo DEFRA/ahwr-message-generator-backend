@@ -125,16 +125,7 @@ const config = convict({
   },
   cdpEnvironment: {
     doc: 'The CDP environment the app is running in. With the addition of "local" for local development',
-    format: [
-      'local',
-      'infra-dev',
-      'management',
-      'dev',
-      'test',
-      'perf-test',
-      'ext-test',
-      'prod'
-    ],
+    format: ['local', 'infra-dev', 'management', 'dev', 'test', 'perf-test', 'ext-test', 'prod'],
     default: 'local',
     env: 'ENVIRONMENT'
   },
@@ -247,13 +238,7 @@ const config = convict({
       },
       readPreference: {
         doc: 'Mongo read preference, overrides mongo URI when set.',
-        format: [
-          'primary',
-          'primaryPreferred',
-          'secondary',
-          'secondaryPreferred',
-          'nearest'
-        ],
+        format: ['primary', 'primaryPreferred', 'secondary', 'secondaryPreferred', 'nearest'],
         default: null,
         nullable: true,
         env: 'MONGO_READ_PREFERENCE'

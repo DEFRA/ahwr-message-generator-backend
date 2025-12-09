@@ -36,10 +36,7 @@ const baseParams = {
 
 describe('sendEvidenceEmail', () => {
   beforeAll(() => {
-    config.set(
-      'notify.templates.evidenceReviewTemplateId',
-      '550e8400-e29b-41d4-a716-446655440000'
-    )
+    config.set('notify.templates.evidenceReviewTemplateId', '550e8400-e29b-41d4-a716-446655440000')
     config.set(
       'notify.templates.evidenceFollowUpTemplateId',
       '111e8400-e29b-41d4-a716-446655440000'
@@ -117,12 +114,8 @@ describe('sendEvidenceEmail', () => {
           }
         })
 
-        expect(mockLogger.info).toHaveBeenCalledWith(
-          `Sending ${params.addressType} evidence email`
-        )
-        expect(mockLogger.info).toHaveBeenCalledWith(
-          `Sent ${params.addressType} evidence email`
-        )
+        expect(mockLogger.info).toHaveBeenCalledWith(`Sending ${params.addressType} evidence email`)
+        expect(mockLogger.info).toHaveBeenCalledWith(`Sent ${params.addressType} evidence email`)
         expect(mockLogger.error).not.toHaveBeenCalled()
       }
     )
@@ -216,9 +209,7 @@ describe('sendEvidenceEmail', () => {
         expect.objectContaining({
           notifyTemplateId: '111e8400-e29b-41d4-a716-446655440000',
           customParams: expect.objectContaining({
-            customSpeciesBullets: formatBullets(
-              FOLLOW_UP_CATTLE_NEGATIVE_RECOMMENDED_PI_HUNT
-            )
+            customSpeciesBullets: formatBullets(FOLLOW_UP_CATTLE_NEGATIVE_RECOMMENDED_PI_HUNT)
           })
         })
       )

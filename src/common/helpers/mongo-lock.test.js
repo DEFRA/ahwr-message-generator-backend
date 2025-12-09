@@ -35,9 +35,7 @@ describe('Lock Functions', () => {
       const result = await acquireLock(locker, resource, logger)
 
       expect(result).toBeNull()
-      expect(logger.error).toHaveBeenCalledWith(
-        `Failed to acquire lock for ${resource}`
-      )
+      expect(logger.error).toHaveBeenCalledWith(`Failed to acquire lock for ${resource}`)
       expect(locker.lock).toHaveBeenCalledWith(resource)
     })
   })

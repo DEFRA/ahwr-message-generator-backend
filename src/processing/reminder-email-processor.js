@@ -24,20 +24,11 @@ export const processReminderEmailMessage = async (db, message, logger) => {
   }
 
   if (!isValidReminderType(reminderType)) {
-    logger.info(
-      'Skipping sending reminder email, unrecognised reminder parent/sub type provided'
-    )
+    logger.info('Skipping sending reminder email, unrecognised reminder parent/sub type provided')
     return
   }
 
-  if (
-    await reminderEmailAlreadySent(
-      db,
-      agreementReference,
-      databaseMessageType,
-      reminderType
-    )
-  ) {
+  if (await reminderEmailAlreadySent(db, agreementReference, databaseMessageType, reminderType)) {
     logger.info('Skipping sending reminder email, already been processed')
     return
   }
@@ -50,18 +41,10 @@ export const processReminderEmailMessage = async (db, message, logger) => {
   }
 }
 
-const createSfdMessages = ({
-  emailAddresses,
-  reminderType,
-  agreementReference,
-  crn,
-  sbi
-}) => {
+const createSfdMessages = ({ emailAddresses, reminderType, agreementReference, crn, sbi }) => {
   const emailReplyToId = config.get('notify.replyToIdNoReply')
   // Add template by reminderType when required
-  const notifyTemplateId = config.get(
-    'notify.templates.reminderNotClaimedTemplateId'
-  )
+  const notifyTemplateId = config.get('notify.templates.reminderNotClaimedTemplateId')
   const customParams = { agreementReference }
 
   return emailAddresses.map((emailAddress) => {

@@ -1,9 +1,5 @@
 import { getLatestContactDetails } from '../api/application-api.js'
-import {
-  AddressType,
-  getHerdNameLabel,
-  LIVESTOCK_TO_READABLE_SPECIES
-} from '../constants.js'
+import { AddressType, getHerdNameLabel, LIVESTOCK_TO_READABLE_SPECIES } from '../constants.js'
 import { config } from '../config.js'
 import { sendSFDCommsRequest } from '../messaging/send-sfd-comms-request.js'
 import {
@@ -14,8 +10,7 @@ import {
 const MESSAGE_TYPE = 'claimCreated'
 
 export const processNewClaimCreated = async (message, logger, db) => {
-  const { reviewCompleteTemplateId, followupCompleteTemplateId } =
-    config.get('notify.templates')
+  const { reviewCompleteTemplateId, followupCompleteTemplateId } = config.get('notify.templates')
   const noReplyEmailReplyToId = config.get('notify.replyToIdNoReply')
   const carbonCopyEmailAddress = config.get('notify.carbonCopyEmailAddress')
 
@@ -31,17 +26,10 @@ export const processNewClaimCreated = async (message, logger, db) => {
     claimAmount
   } = message
 
-  const messageGenerate = await getByClaimRefAndMessageType(
-    db,
-    claimReference,
-    MESSAGE_TYPE
-  )
+  const messageGenerate = await getByClaimRefAndMessageType(db, claimReference, MESSAGE_TYPE)
 
   if (!messageGenerate) {
-    const contactDetails = await getLatestContactDetails(
-      agreementReference,
-      logger
-    )
+    const contactDetails = await getLatestContactDetails(agreementReference, logger)
     const { name: orgName, orgEmail, email } = contactDetails
     const requestParams = {
       agreementReference,
@@ -56,9 +44,7 @@ export const processNewClaimCreated = async (message, logger, db) => {
       claimAmount,
       emailReplyToId: noReplyEmailReplyToId,
       notifyTemplateId:
-        claimType === 'FOLLOW_UP'
-          ? followupCompleteTemplateId
-          : reviewCompleteTemplateId
+        claimType === 'FOLLOW_UP' ? followupCompleteTemplateId : reviewCompleteTemplateId
     }
 
     if (carbonCopyEmailAddress) {

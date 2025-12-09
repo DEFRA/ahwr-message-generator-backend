@@ -14,10 +14,7 @@ const mockLogger = {
 
 describe('publish outbound notification', () => {
   beforeAll(() => {
-    config.set(
-      'outboundMessage.sfdCommsTopic',
-      'arn:aws:sns:eu-west-2:1:message-requested'
-    )
+    config.set('outboundMessage.sfdCommsTopic', 'arn:aws:sns:eu-west-2:1:message-requested')
   })
 
   beforeEach(() => {
@@ -103,9 +100,7 @@ describe('publish outbound notification', () => {
         logger: mockLogger
       }
 
-      await expect(sendSFDCommsRequest(inputMessageBody)).rejects.toThrow(
-        'SFD validation error'
-      )
+      await expect(sendSFDCommsRequest(inputMessageBody)).rejects.toThrow('SFD validation error')
 
       expect(publishMessage).not.toHaveBeenCalled()
     })

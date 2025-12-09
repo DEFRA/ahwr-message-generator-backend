@@ -21,11 +21,7 @@ describe('process status update message', () => {
 
     await routeStatusUpdateMessage(mockMessage, mockLogger, mockDb)
 
-    expect(processNewClaimCreated).toHaveBeenCalledWith(
-      mockMessage,
-      mockLogger,
-      mockDb
-    )
+    expect(processNewClaimCreated).toHaveBeenCalledWith(mockMessage, mockLogger, mockDb)
     expect(processInCheckStatusMessageForEvidenceEmail).not.toHaveBeenCalled()
   })
 
@@ -36,11 +32,7 @@ describe('process status update message', () => {
 
     await routeStatusUpdateMessage(mockICMessage, mockLogger, mockDb)
 
-    expect(processNewClaimCreated).toHaveBeenCalledWith(
-      mockICMessage,
-      mockLogger,
-      mockDb
-    )
+    expect(processNewClaimCreated).toHaveBeenCalledWith(mockICMessage, mockLogger, mockDb)
     expect(processInCheckStatusMessageForEvidenceEmail).toHaveBeenCalledWith(
       mockICMessage,
       mockLogger,
@@ -61,9 +53,9 @@ describe('process status update message', () => {
 
   it('should throw an error if validation fails', async () => {
     validateStatusMessageRequest.mockReturnValueOnce(false)
-    await expect(
-      routeStatusUpdateMessage(mockMessage, mockLogger, mockDb)
-    ).rejects.toThrow('Invalid status message request')
+    await expect(routeStatusUpdateMessage(mockMessage, mockLogger, mockDb)).rejects.toThrow(
+      'Invalid status message request'
+    )
 
     expect(processNewClaimCreated).not.toHaveBeenCalled()
     expect(processInCheckStatusMessageForEvidenceEmail).not.toHaveBeenCalled()

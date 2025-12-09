@@ -21,10 +21,7 @@ describe('getLatestContactDetails', () => {
       payload: { name: 'John Doe', email: 'john.doe@example.com' }
     })
 
-    const result = await getLatestContactDetails(
-      applicationReference,
-      mockLogger
-    )
+    const result = await getLatestContactDetails(applicationReference, mockLogger)
 
     expect(wreck.get).toHaveBeenCalledWith(endpoint, { json: true })
     expect(result).toEqual({ name: 'John Doe', email: 'john.doe@example.com' })
@@ -34,9 +31,7 @@ describe('getLatestContactDetails', () => {
     const error = new Error('Request failed')
     wreck.get.mockRejectedValueOnce(error)
 
-    await expect(
-      getLatestContactDetails(applicationReference, mockLogger)
-    ).rejects.toThrow(error)
+    await expect(getLatestContactDetails(applicationReference, mockLogger)).rejects.toThrow(error)
 
     expect(mockLogger.error).toHaveBeenCalledWith(
       {

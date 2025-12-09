@@ -9,10 +9,7 @@ import {
   REVIEW_PIGS,
   REVIEW_SHEEP
 } from './bullet-points.js'
-import {
-  getHerdNameLabel,
-  LIVESTOCK_TO_READABLE_SPECIES
-} from '../../constants.js'
+import { getHerdNameLabel, LIVESTOCK_TO_READABLE_SPECIES } from '../../constants.js'
 import { sendSFDCommsRequest } from '../../messaging/send-sfd-comms-request.js'
 import { config } from '../../config.js'
 
@@ -51,8 +48,7 @@ const getFollowUpBulletPoints = (
   return []
 }
 
-export const formatBullets = (bullets = []) =>
-  bullets.map((bullet) => `* ${bullet}`).join('\n')
+export const formatBullets = (bullets = []) => bullets.map((bullet) => `* ${bullet}`).join('\n')
 
 export const sendEvidenceEmail = async (params) => {
   const {
@@ -84,8 +80,7 @@ export const sendEvidenceEmail = async (params) => {
 
     if (claimType === 'REVIEW') {
       notifyTemplateId = evidenceReviewTemplateId
-      bulletPoints =
-        REVIEW_BULLET_POINTS_BY_TYPE_OF_LIVESTOCK[typeOfLivestock] || []
+      bulletPoints = REVIEW_BULLET_POINTS_BY_TYPE_OF_LIVESTOCK[typeOfLivestock] || []
     } else {
       notifyTemplateId = evidenceFollowUpTemplateId
       bulletPoints = getFollowUpBulletPoints(

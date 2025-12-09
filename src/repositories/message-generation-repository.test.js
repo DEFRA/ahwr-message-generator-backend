@@ -45,11 +45,7 @@ describe('message-generation repository', () => {
       }
       mockDb.findOne.mockResolvedValueOnce(mockData)
 
-      const result = await getByClaimRefAndMessageType(
-        mockDb,
-        'TEMP-O9UD-22F6',
-        'statusUpdate-5'
-      )
+      const result = await getByClaimRefAndMessageType(mockDb, 'TEMP-O9UD-22F6', 'statusUpdate-5')
 
       expect(mockDb.findOne).toHaveBeenCalledWith({
         claimReference: 'TEMP-O9UD-22F6',
@@ -61,11 +57,7 @@ describe('message-generation repository', () => {
     test('should return null if no result is found', async () => {
       mockDb.findOne.mockResolvedValueOnce(null)
 
-      const result = await getByClaimRefAndMessageType(
-        mockDb,
-        'TEMP-O9UD-22F6',
-        'statusUpdate-5'
-      )
+      const result = await getByClaimRefAndMessageType(mockDb, 'TEMP-O9UD-22F6', 'statusUpdate-5')
 
       expect(result).toBeNull()
     })
@@ -77,11 +69,7 @@ describe('message-generation repository', () => {
         messageType: 'statusUpdate-5'
       })
 
-      await getByClaimRefAndMessageType(
-        mockDb,
-        'TEMP-O9UD-22F6',
-        'statusUpdate-5'
-      )
+      await getByClaimRefAndMessageType(mockDb, 'TEMP-O9UD-22F6', 'statusUpdate-5')
 
       expect(mockDb.findOne).toHaveBeenCalledWith({
         claimReference: 'TEMP-O9UD-22F6',

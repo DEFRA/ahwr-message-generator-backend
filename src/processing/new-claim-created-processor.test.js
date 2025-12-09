@@ -24,14 +24,8 @@ describe('process new claim email message', () => {
   beforeEach(() => {
     config.set('notify.carbonCopyEmailAddress', 'cc@example.com')
     config.set('notify.replyToIdNoReply', 'no-reply@example.com')
-    config.set(
-      'notify.templates.reviewCompleteTemplateId',
-      'review-complete-template-id'
-    )
-    config.set(
-      'notify.templates.followupCompleteTemplateId',
-      'followup-complete-template-id'
-    )
+    config.set('notify.templates.reviewCompleteTemplateId', 'review-complete-template-id')
+    config.set('notify.templates.followupCompleteTemplateId', 'followup-complete-template-id')
   })
 
   afterEach(() => {
@@ -108,16 +102,9 @@ describe('process new claim email message', () => {
       'REBC-O9UD-22F6',
       'claimCreated'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'IAHW-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('IAHW-0AD3-3322', mockedLogger)
     expect(sendSFDCommsRequest).toHaveBeenCalledTimes(3)
-    checkNewClaimEmailSendAndEventRaised(
-      'cc@example.com',
-      'review-complete-template-id',
-      'CC'
-    )
+    checkNewClaimEmailSendAndEventRaised('cc@example.com', 'review-complete-template-id', 'CC')
     checkNewClaimEmailSendAndEventRaised(
       'willowfarm@gmail.com',
       'review-complete-template-id',
@@ -162,10 +149,7 @@ describe('process new claim email message', () => {
       'REBC-O9UD-22F6',
       'claimCreated'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'IAHW-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('IAHW-0AD3-3322', mockedLogger)
     expect(sendSFDCommsRequest).toHaveBeenCalledTimes(1)
     checkNewClaimEmailSendAndEventRaised(
       'john.doe@gmail.com',
@@ -209,10 +193,7 @@ describe('process new claim email message', () => {
       'FUSH-O9UD-22F6',
       'claimCreated'
     )
-    expect(getLatestContactDetails).toHaveBeenCalledWith(
-      'IAHW-0AD3-3322',
-      mockedLogger
-    )
+    expect(getLatestContactDetails).toHaveBeenCalledWith('IAHW-0AD3-3322', mockedLogger)
     expect(sendSFDCommsRequest).toHaveBeenCalledTimes(2)
     checkNewClaimEmailSendAndEventRaised(
       'cc@example.com',
@@ -287,9 +268,9 @@ describe('process new claim email message', () => {
       orgEmail: 'willowfarm@gmail.com'
     })
 
-    await expect(
-      processNewClaimCreated(eventBody, mockedLogger, mockDb)
-    ).rejects.toThrow('Email send failed')
+    await expect(processNewClaimCreated(eventBody, mockedLogger, mockDb)).rejects.toThrow(
+      'Email send failed'
+    )
 
     expect(mockedLogger.error).toHaveBeenCalledWith(
       {

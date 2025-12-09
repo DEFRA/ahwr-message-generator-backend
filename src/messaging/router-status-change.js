@@ -5,10 +5,7 @@ import { STATUS } from 'ffc-ahwr-common-library'
 
 export const routeStatusUpdateMessage = async (message, logger, db) => {
   if (validateStatusMessageRequest(logger, message)) {
-    if (
-      message.claimStatus === STATUS.ON_HOLD ||
-      message.claimStatus === STATUS.IN_CHECK
-    ) {
+    if (message.claimStatus === STATUS.ON_HOLD || message.claimStatus === STATUS.IN_CHECK) {
       await processNewClaimCreated(message, logger, db)
     }
 
