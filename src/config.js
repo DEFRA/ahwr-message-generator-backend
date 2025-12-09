@@ -35,6 +35,94 @@ const config = convict({
     format: String,
     default: 'ahwr-message-generator-backend'
   },
+  evidenceEmailEnabled: {
+    doc: 'Is evidence email functionality enabled',
+    format: Boolean,
+    default: false,
+    env: 'EVIDENCE_EMAIL_ENABLED'
+  },
+  reminderEmailEnabled: {
+    doc: 'Is reminder email functionality enabled',
+    format: Boolean,
+    default: false,
+    env: 'REMINDER_EMAIL_ENABLED'
+  },
+  applicationApiUri: {
+    doc: 'URI for AHWR Application Backend API',
+    format: String,
+    default: 'https://ahwr-application-backend.dev.cdp-int.defra.cloud/api',
+    env: 'APPLICATION_API_URI'
+  },
+  notify: {
+    carbonCopyEmailAddress: {
+      doc: 'Email address to be CCed on all emails sent via Notify',
+      format: String,
+      default: '',
+      env: 'CARBON_COPY_EMAIL_ADDRESS'
+    },
+    evidenceCarbonCopyEmailAddress: {
+      doc: 'Email address to be CCed on all emails sent via Notify for evidence emails',
+      format: String,
+      default: '',
+      env: 'EVIDENCE_CARBON_COPY_EMAIL_ADDRESS'
+    },
+    replyToId: {
+      doc: 'Notify email reply to ID',
+      format: String,
+      default: '',
+      env: 'EMAIL_REPLY_TO_ID'
+    },
+    replyToIdNoReply: {
+      doc: 'Notify email reply to ID for no reply emails',
+      format: String,
+      default: '',
+      env: 'NO_REPLY_EMAIL_REPLY_TO_ID'
+    },
+    templates: {
+      evidenceReviewTemplateId: {
+        doc: 'Notify email template ID for review evidence emails',
+        format: String,
+        default: '',
+        env: 'EVIDENCE_REVIEW_TEMPLATE_ID'
+      },
+      evidenceFollowUpTemplateId: {
+        doc: 'Notify email template ID for follow up evidence emails',
+        format: String,
+        default: '',
+        env: 'EVIDENCE_FOLLOW_UP_TEMPLATE_ID'
+      },
+      newReviewClaimTemplateId: {
+        doc: 'Notify email template ID for new review claim emails',
+        format: String,
+        default: '',
+        env: 'NEW_REVIEW_CLAIM_TEMPLATE_ID'
+      },
+      newFollowUpClaimTemplateId: {
+        doc: 'Notify email template ID for new follow up claim emails',
+        format: String,
+        default: '',
+        env: 'NEW_FOLLOW_UP_CLAIM_TEMPLATE_ID'
+      },
+      reminderNotClaimedTemplateId: {
+        doc: 'Notify email template ID for not claimed reminders',
+        format: String,
+        default: '',
+        env: 'REMINDER_EMAIL_NOT_CLAIMED_TEMPLATE_ID'
+      },
+      newUserAgreementTemplateId: {
+        doc: 'Notify email template ID for new user agreement emails',
+        format: String,
+        default: '',
+        env: 'NEW_USER_AGREEMENT_TEMPLATE_ID'
+      },
+      existingUserAgreementTemplateId: {
+        doc: 'Notify email template ID for existing user agreement emails',
+        format: String,
+        default: '',
+        env: 'EXISTING_USER_AGREEMENT_TEMPLATE_ID'
+      }
+    }
+  },
   cdpEnvironment: {
     doc: 'The CDP environment the app is running in. With the addition of "local" for local development',
     format: [
@@ -58,11 +146,11 @@ const config = convict({
         default: 'uk.gov.ffc.ahwr.document.created',
         env: 'INBOUND_MESSAGE_DOCUMENT_CREATED'
       },
-      statusChange: {
-        doc: 'Messages from ahwr_status_change subscription',
+      statusUpdate: {
+        doc: 'Messages from ahwr_status_update subscription',
         format: String,
-        default: 'uk.gov.ffc.ahwr.status.change',
-        env: 'INBOUND_MESSAGE_STATUS_CHANGE'
+        default: 'uk.gov.ffc.ahwr.claim.status.update',
+        env: 'INBOUND_MESSAGE_STATUS_UPDATE'
       },
       reminderRequest: {
         doc: 'Messages from ahwr_reminder_request subscription',
@@ -81,13 +169,13 @@ const config = convict({
     }
   },
   outboundMessage: {
-    sfdProxyTopic: {
-      doc: 'Topic name to send SFD proxy requests to',
+    sfdCommsTopic: {
+      doc: 'Topic name to send SFD comms proxy requests to',
       format: String,
       default: 'ahwr_message_request',
-      env: 'SFD_PROXY_MESSAGE_TOPIC'
+      env: 'MESSAGE_REQUEST_TOPIC_ARN'
     },
-    messageType: {
+    eventType: {
       doc: 'SFD proxy requests message type',
       format: String,
       default: 'uk.gov.ffc.ahwr.submit.sfd.message.request',

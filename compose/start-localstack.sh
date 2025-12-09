@@ -70,7 +70,7 @@ create_queue_subscribe_to_topic "ahwr_message_generator_queue" $(create_topic "a
 create_queue_subscribe_to_topic "ahwr_message_generator_queue" $(create_topic "ahwr_reminder_request")
 
 # Outbound
-create_queue_subscribe_to_topic "ahwr_message_request_queue" $(create_topic "ahwr_message_request")
+create_queue_subscribe_to_topic "ahwr_sfd_message_queue" $(create_topic "ahwr_message_request")
 
 wait
 
@@ -83,6 +83,8 @@ awslocal sns list-subscriptions
 
 echo "AWS resources ready!"
 
-# echo "Test SNS publish and SQS receive.."
-# awslocal sns publish --topic-arn arn:aws:sns:eu-west-2:000000000000:ahwr_reminder_request --message '{"reminderType":"notClaimed_nineMonths","crn":1060000000,"sbi":987654321,"agreementReference":"IAHW-ABC1-1061","emailAddresses":["defra-vets-visits-testing@equalexperts.com"]}' --message-attributes '{"messageType":{"DataType":"String","StringValue":"uk.gov.ffc.ahwr.reminder.request"}}'
-# awslocal sqs receive-message --queue-url http://localhost:4566/000000000000/ahwr_message_generator_queue
+# Send some inputs
+awslocal sns publish --topic-arn arn:aws:sns:eu-west-2:000000000000:ahwr_reminder_request --message '{"reminderType":"notClaimed_nineMonths","crn":1060000000,"sbi":987654321,"agreementReference":"IAHW-ABC1-1061","emailAddresses":["defra-vets-visits-testing@equalexperts.com"]}' --message-attributes '{"eventType":{"DataType":"String","StringValue":"uk.gov.ffc.ahwr.reminder.request"}}'
+awslocal sns publish --topic-arn arn:aws:sns:eu-west-2:000000000000:ahwr_status_change --message '{"crn":1060000000,"sbi":987654321,"agreementReference":"IAHW-ABC1-1061","claimReference":"REPI-ABC1-XYZ1","claimStatus":"IN_CHECK","claimType":"REVIEW","typeOfLivestock":"pigs","reviewTestResults":"positive","claimAmount":"456","dateTime":"2025-12-01T14:22:45.123Z","herdName":"piglets"}' --message-attributes '{"eventType":{"DataType":"String","StringValue":"uk.gov.ffc.ahwr.claim.status.update"}}'
+awslocal sns publish --topic-arn arn:aws:sns:eu-west-2:000000000000:ahwr_document_created --message '{"crn":1060000000,"sbi":987654321,"applicationReference":"IAHW-ABC1-1061","documentLocation":"987654321/IAHW-ABC1-1061.pdf","userType":"newUser"}' --message-attributes '{"eventType":{"DataType":"String","StringValue":"uk.gov.ffc.ahwr.document.created"}}'
+

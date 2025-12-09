@@ -1,17 +1,140 @@
-import { redactPII } from './message-generation-repository.js'
+import {
+  createMessageRequestEntry,
+  getByClaimRefAndMessageType,
+  redactPII,
+  reminderEmailAlreadySent
+} from './message-generation-repository.js'
 
 describe('message-generation repository', () => {
-  describe('redactPII', () => {
-    const mockLogger = { info: jest.fn() }
-    const mockDb = {
-      collection: jest.fn().mockReturnThis(),
-      updateMany: jest.fn()
-    }
+  const mockLogger = { info: jest.fn() }
+  const mockDb = {
+    collection: jest.fn().mockReturnThis(),
+    updateMany: jest.fn(),
+    insertOne: jest.fn(),
+    findOne: jest.fn(),
+    countDocuments: jest.fn()
+  }
 
-    beforeEach(async () => {
-      jest.clearAllMocks()
+  beforeEach(async () => {
+    jest.clearAllMocks()
+  })
+
+  describe('createMessageRequestEntry', () => {
+    test('it saves data to the DB', () => {
+      const testData = {
+        id: 'test-id-1',
+        someOtherStuff: 'im-the-other-stuff '
+      }
+      createMessageRequestEntry(mockDb, testData)
+      expect(mockDb.insertOne).toHaveBeenCalledTimes(1)
+      expect(mockDb.insertOne).toHaveBeenCalledWith({
+        id: 'test-id-1',
+        someOtherStuff: 'im-the-other-stuff '
+      })
+    })
+  })
+
+  describe('getByClaimRefAndMessageType', () => {
+    test('should return a result if the claim reference and message type exist', async () => {
+      const mockData = {
+        id: 123,
+        claimReference: 'TEMP-O9UD-22F6',
+        messageType: 'statusUpdate-5',
+        createdAt: '2025-03-24T12:34:56Z',
+        updatedAt: '2025-03-24T12:34:56Z'
+      }
+      mockDb.findOne.mockResolvedValueOnce(mockData)
+
+      const result = await getByClaimRefAndMessageType(
+        mockDb,
+        'TEMP-O9UD-22F6',
+        'statusUpdate-5'
+      )
+
+      expect(mockDb.findOne).toHaveBeenCalledWith({
+        claimReference: 'TEMP-O9UD-22F6',
+        messageType: 'statusUpdate-5'
+      })
+      expect(result).toEqual(mockData)
     })
 
+    test('should return null if no result is found', async () => {
+      mockDb.findOne.mockResolvedValueOnce(null)
+
+      const result = await getByClaimRefAndMessageType(
+        mockDb,
+        'TEMP-O9UD-22F6',
+        'statusUpdate-5'
+      )
+
+      expect(result).toBeNull()
+    })
+
+    test('should call findOne with uppercase claimReference', async () => {
+      mockDb.findOne.mockResolvedValueOnce({
+        id: 123,
+        claimReference: 'temp-O9ud-22f6',
+        messageType: 'statusUpdate-5'
+      })
+
+      await getByClaimRefAndMessageType(
+        mockDb,
+        'TEMP-O9UD-22F6',
+        'statusUpdate-5'
+      )
+
+      expect(mockDb.findOne).toHaveBeenCalledWith({
+        claimReference: 'TEMP-O9UD-22F6',
+        messageType: 'statusUpdate-5'
+      })
+    })
+  })
+
+  describe('reminderEmailAlreadySent', () => {
+    test('return false when no records returned', async () => {
+      const agreementReference = 'IAHW-BEKR-AWIU'
+      const messageType = 'reminderEmail'
+      const reminderType = 'notClaimed_oneMonth'
+      mockDb.countDocuments.mockResolvedValueOnce(0)
+
+      const result = await reminderEmailAlreadySent(
+        mockDb,
+        agreementReference,
+        messageType,
+        reminderType
+      )
+
+      expect(mockDb.countDocuments).toHaveBeenCalledWith({
+        agreementReference,
+        messageType,
+        'data.reminderType': reminderType
+      })
+      expect(result).toBe(false)
+    })
+
+    test('return true when records returned', async () => {
+      const agreementReference = 'IAHW-BEKR-AWIU'
+      const messageType = 'reminderEmail'
+      const reminderType = 'notClaimed_oneMonth'
+      mockDb.countDocuments.mockResolvedValueOnce(1)
+
+      const result = await reminderEmailAlreadySent(
+        mockDb,
+        agreementReference,
+        messageType,
+        reminderType
+      )
+
+      expect(mockDb.countDocuments).toHaveBeenCalledWith({
+        agreementReference,
+        messageType,
+        'data.reminderType': reminderType
+      })
+      expect(result).toBe(true)
+    })
+  })
+
+  describe('redactPII', () => {
     test('should call update with correct parameters', async () => {
       const agreementReferences = ['AHWR-123', 'IAHW-456']
       mockDb.updateMany.mockResolvedValueOnce({ modifiedCount: 2 })

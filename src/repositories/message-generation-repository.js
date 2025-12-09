@@ -2,6 +2,36 @@ import { REDACT_PII_VALUES } from 'ffc-ahwr-common-library'
 
 const COLLECTION = 'messagegeneration'
 
+export const createMessageRequestEntry = async (db, data) => {
+  await db.collection(COLLECTION).insertOne(data)
+}
+
+export const getByClaimRefAndMessageType = (
+  db,
+  claimReference,
+  messageType
+) => {
+  return db.collection(COLLECTION).findOne({
+    claimReference: claimReference.toUpperCase(),
+    messageType
+  })
+}
+
+export const reminderEmailAlreadySent = async (
+  db,
+  agreementReference,
+  messageType,
+  reminderType
+) => {
+  const count = await db.collection(COLLECTION).countDocuments({
+    agreementReference: agreementReference.toUpperCase(),
+    messageType,
+    'data.reminderType': reminderType
+  })
+
+  return count > 0
+}
+
 export const redactPII = async (db, agreementReferences, logger) => {
   const {
     REDACTED_EMAIL,

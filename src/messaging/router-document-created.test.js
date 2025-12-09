@@ -1,4 +1,4 @@
-import { processMessage } from './processor-document-created.js'
+import { routeDocumentCreatedMessage } from './router-document-created.js'
 
 const mockDb = {}
 const mockLogger = { info: jest.fn() }
@@ -10,10 +10,10 @@ describe('processMessage', () => {
   })
 
   it('should skip processing and log message when message already been processed', async () => {
-    await processMessage(mockMessage, mockLogger, mockDb)
+    await routeDocumentCreatedMessage(mockMessage, mockLogger, mockDb)
 
     expect(mockLogger.info).toHaveBeenCalledWith(
-      'Message has already been processed for claim being created'
+      'Message has already been processed for agreement document being created'
     )
   })
 })

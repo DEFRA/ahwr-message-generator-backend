@@ -1,6 +1,6 @@
 import { startServer } from '../../../src/common/helpers/start-server.js'
 
-//  TODO something in this test is causing.. Jest did not exit one second after the test run has completed.
+jest.mock('../../../src/messaging/subscriber-message-generator-queue.js')
 describe('health endpoint test', () => {
   let server
 

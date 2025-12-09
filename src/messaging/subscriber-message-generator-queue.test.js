@@ -6,15 +6,15 @@ import {
 import { SqsSubscriber } from 'ffc-ahwr-common-library'
 import { getLogger } from '../common/helpers/logging/logger.js'
 import { config } from '../config.js'
-import { processMessage as processStatusChangeMessage } from './processor-status-change.js'
-import { processMessage as processDocumentCreatedMessage } from './processor-document-created.js'
-import { processMessage as processReminderRequestMessage } from './processor-reminder-request.js'
+import { routeStatusUpdateMessage } from './router-status-change.js'
+import { routeDocumentCreatedMessage as processDocumentCreatedMessage } from './router-document-created.js'
+import { processReminderEmailMessage } from '../processing/reminder-email-processor.js'
 
 jest.mock('ffc-ahwr-common-library')
 jest.mock('../common/helpers/logging/logger.js')
-jest.mock('./processor-document-created.js')
-jest.mock('./processor-status-change.js')
-jest.mock('./processor-reminder-request.js')
+jest.mock('./router-document-created.js')
+jest.mock('./router-status-change.js')
+jest.mock('../processing/reminder-email-processor.js')
 
 describe('subscriber-message-generator-queue', () => {
   beforeEach(() => {
@@ -77,8 +77,8 @@ describe('subscriber-message-generator-queue', () => {
     const mockDb = {}
     const mockMessage = {}
 
-    it('should throw error when unsupported messageType', async () => {
-      const mockAttributes = { messageType: 'unsupported.type' }
+    it('should throw error when unsupported eventType', async () => {
+      const mockAttributes = { eventType: 'unsupported.type' }
 
       await expect(
         handleInboundMessage(
@@ -88,19 +88,19 @@ describe('subscriber-message-generator-queue', () => {
           mockLogger,
           mockDb
         )
-      ).rejects.toThrow('Unsupported message received')
+      ).rejects.toThrow('Unsupported event received')
 
       expect(mockLogger.info).toHaveBeenCalledWith(
         expect.any(Object),
         'Received incoming message'
       )
-      expect(processStatusChangeMessage).toHaveBeenCalledTimes(0)
+      expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
       expect(processDocumentCreatedMessage).toHaveBeenCalledTimes(0)
-      expect(processReminderRequestMessage).toHaveBeenCalledTimes(0)
+      expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call processStatusChangeMessage messageType is: ${types.statusChange} `, async () => {
-      const mockAttributes = { messageType: types.statusChange }
+    it(`should call routeStatusUpdateMessage eventType is: ${types.statusUpdate} `, async () => {
+      const mockAttributes = { eventType: types.statusUpdate }
 
       await handleInboundMessage(
         mockMessage,
@@ -110,13 +110,13 @@ describe('subscriber-message-generator-queue', () => {
         mockDb
       )
 
-      expect(processStatusChangeMessage).toHaveBeenCalledTimes(1)
+      expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(1)
       expect(processDocumentCreatedMessage).toHaveBeenCalledTimes(0)
-      expect(processReminderRequestMessage).toHaveBeenCalledTimes(0)
+      expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call processDocumentCreatedMessage messageType is: ${types.documentCreated} `, async () => {
-      const mockAttributes = { messageType: types.documentCreated }
+    it(`should call processDocumentCreatedMessage eventType is: ${types.documentCreated} `, async () => {
+      const mockAttributes = { eventType: types.documentCreated }
 
       await handleInboundMessage(
         mockMessage,
@@ -127,12 +127,12 @@ describe('subscriber-message-generator-queue', () => {
       )
 
       expect(processDocumentCreatedMessage).toHaveBeenCalledTimes(1)
-      expect(processStatusChangeMessage).toHaveBeenCalledTimes(0)
-      expect(processReminderRequestMessage).toHaveBeenCalledTimes(0)
+      expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
+      expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call processReminderRequestMessage messageType is: ${types.reminderRequest} `, async () => {
-      const mockAttributes = { messageType: types.reminderRequest }
+    it(`should call processReminderEmailMessage eventType is: ${types.reminderRequest} `, async () => {
+      const mockAttributes = { eventType: types.reminderRequest }
 
       await handleInboundMessage(
         mockMessage,
@@ -142,8 +142,8 @@ describe('subscriber-message-generator-queue', () => {
         mockDb
       )
 
-      expect(processReminderRequestMessage).toHaveBeenCalledTimes(1)
-      expect(processStatusChangeMessage).toHaveBeenCalledTimes(0)
+      expect(processReminderEmailMessage).toHaveBeenCalledTimes(1)
+      expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
       expect(processDocumentCreatedMessage).toHaveBeenCalledTimes(0)
     })
   })
