@@ -27,9 +27,11 @@ export const processInCheckStatusMessageForEvidenceEmail = async (message, logge
   } = message.body
   const ccAddress = config.get('notify.evidenceCarbonCopyEmailAddress')
   const messageType = `statusChange-${claimStatus}`
-  const messageGenerate = await getByClaimRefAndMessageType(db, claimReference, messageType)
+  const messageAlreadyGenerated = await getByClaimRefAndMessageType(db, claimReference, messageType)
 
-  if (!messageGenerate) {
+  if (messageAlreadyGenerated) {
+    logger.info(`Message has already been processed with status: ${claimStatus}`)
+  } else {
     const contactDetails = await getLatestContactDetails(agreementReference, logger)
     const { name: orgName, orgEmail, email } = contactDetails
     const requestParams = {
@@ -89,7 +91,5 @@ export const processInCheckStatusMessageForEvidenceEmail = async (message, logge
         herdName
       }
     })
-  } else {
-    logger.info(`Message has already been processed with status: ${claimStatus}`)
   }
 }

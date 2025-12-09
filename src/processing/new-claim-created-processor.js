@@ -26,9 +26,15 @@ export const processNewClaimCreated = async (message, logger, db) => {
     claimAmount
   } = message
 
-  const messageGenerate = await getByClaimRefAndMessageType(db, claimReference, MESSAGE_TYPE)
+  const messageAlreadyGenerated = await getByClaimRefAndMessageType(
+    db,
+    claimReference,
+    MESSAGE_TYPE
+  )
 
-  if (!messageGenerate) {
+  if (messageAlreadyGenerated) {
+    logger.info('Message has already been processed for claim being created')
+  } else {
     const contactDetails = await getLatestContactDetails(agreementReference, logger)
     const { name: orgName, orgEmail, email } = contactDetails
     const requestParams = {
@@ -87,8 +93,6 @@ export const processNewClaimCreated = async (message, logger, db) => {
         claimAmount
       }
     })
-  } else {
-    logger.info('Message has already been processed for claim being created')
   }
 }
 
