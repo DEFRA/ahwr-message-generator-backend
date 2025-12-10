@@ -8,7 +8,7 @@ import { sendSFDCommsRequest } from '../messaging/send-sfd-comms-request.js'
 
 export const databaseMessageType = 'reminderEmail'
 
-export const processReminderEmailMessage = async (db, message, logger) => {
+export const processReminderEmailMessage = async (message, logger, db) => {
   const reminderEmailsEnabled = config.get('reminderEmailEnabled')
   const { reminderType, agreementReference, emailAddresses } = message
 

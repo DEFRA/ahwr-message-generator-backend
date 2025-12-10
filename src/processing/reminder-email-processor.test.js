@@ -44,7 +44,7 @@ describe('processReminderEmailMessage', () => {
 
     config.set('reminderEmailEnabled', false)
 
-    await processReminderEmailMessage(mockDb, event, mockLogger)
+    await processReminderEmailMessage(event, mockLogger, mockDb)
 
     expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
     expect(mockLogger.info).toHaveBeenCalledTimes(1)
@@ -65,7 +65,7 @@ describe('processReminderEmailMessage', () => {
       emailAddresses: ['fake-email@example.com']
     }
 
-    await processReminderEmailMessage(mockDb, event, mockLogger)
+    await processReminderEmailMessage(event, mockLogger, mockDb)
 
     expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
     expect(mockLogger.info).toHaveBeenCalledTimes(1)
@@ -87,7 +87,7 @@ describe('processReminderEmailMessage', () => {
     }
     reminderEmailAlreadySent.mockResolvedValueOnce(true)
 
-    await processReminderEmailMessage(mockDb, message, mockLogger)
+    await processReminderEmailMessage(message, mockLogger, mockDb)
 
     expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
     expect(mockLogger.info).toHaveBeenCalledTimes(1)
@@ -114,7 +114,7 @@ describe('processReminderEmailMessage', () => {
       emailAddresses: ['fake-email-1@example.com', 'fake-email-2@example.com']
     }
 
-    await processReminderEmailMessage(mockDb, message, mockLogger)
+    await processReminderEmailMessage(message, mockLogger, mockDb)
 
     expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
     expect(mockLogger.info).toHaveBeenCalledWith('Processing reminder email message')
@@ -186,7 +186,7 @@ describe('processReminderEmailMessage', () => {
     sendSFDCommsRequest.mockRejectedValueOnce(error)
 
     try {
-      await processReminderEmailMessage(mockDb, message, mockLogger)
+      await processReminderEmailMessage(message, mockLogger, mockDb)
     } catch (e) {
       expect(mockLogger.setBindings).toHaveBeenCalledTimes(1)
       expect(mockLogger.info).toHaveBeenCalledTimes(1)
