@@ -38,9 +38,7 @@ describe('#startServer', () => {
     test('Should log failed startup message', async () => {
       mockServerStart.mockRejectedValue(new Error('Server failed to start'))
 
-      await expect(startServer.startServer()).rejects.toThrow(
-        'Server failed to start'
-      )
+      await expect(startServer.startServer()).rejects.toThrow('Server failed to start')
     })
   })
 })

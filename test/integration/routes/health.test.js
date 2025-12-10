@@ -1,5 +1,6 @@
 import { startServer } from '../../../src/common/helpers/start-server.js'
 
+jest.mock('../../../src/messaging/subscriber-message-generator-queue.js')
 describe('health endpoint test', () => {
   let server
 

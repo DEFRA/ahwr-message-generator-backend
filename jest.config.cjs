@@ -4,6 +4,8 @@ module.exports = {
   coverageDirectory: 'test-output',
   coverageReporters: ['text-summary', 'lcov'],
   coveragePathIgnorePatterns: [
+    '<rootDir>/compose/',
+    '<rootDir>/coverage/',
     '<rootDir>/node_modules/',
     '<rootDir>/test-output/',
     '<rootDir>/tests/',
@@ -31,6 +33,6 @@ module.exports = {
     '^.+\\.[j]sx?$': 'babel-jest'
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(ffc-ahwr-common-library|@defra/hapi-tracing|@defra/hapi-secure-context)/)'
+    '/node_modules/(?!(ffc-ahwr-common-library|@defra/hapi-tracing|@defra/hapi-secure-context|uuid)/)'
   ]
 }

@@ -3,11 +3,9 @@ import { startServer } from '../../../src/common/helpers/start-server.js'
 import { redactPII } from '../../../src/repositories/message-generation-repository.js'
 
 jest.mock('../../../src/repositories/message-generation-repository.js')
+jest.mock('../../../src/messaging/subscriber-message-generator-queue.js')
 
-const mockAgreementsToRedact = [
-  { reference: 'FAKE-REF-1' },
-  { reference: 'FAKE-REF-2' }
-]
+const mockAgreementsToRedact = [{ reference: 'FAKE-REF-1' }, { reference: 'FAKE-REF-2' }]
 
 describe('redact-pii', () => {
   let server

@@ -9,6 +9,10 @@ import { mongoDb } from './common/helpers/mongodb.js'
 import { pulse } from './common/helpers/pulse.js'
 import { requestTracing } from './common/helpers/request-tracing.js'
 import { setupProxy } from './common/helpers/proxy/setup-proxy.js'
+import {
+  configureAndStart,
+  stopSubscriber
+} from './messaging/subscriber-message-generator-queue.js'
 
 export async function createServer() {
   setupProxy()
@@ -55,6 +59,14 @@ export async function createServer() {
     },
     router
   ])
+
+  server.events.on('start', async () => {
+    await configureAndStart(server.db)
+  })
+
+  server.events.on('stop', async () => {
+    await stopSubscriber()
+  })
 
   return server
 }
