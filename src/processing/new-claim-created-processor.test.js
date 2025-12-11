@@ -24,8 +24,8 @@ describe('process new claim email message', () => {
   beforeEach(() => {
     config.set('notify.carbonCopyEmailAddress', 'cc@example.com')
     config.set('notify.replyToIdNoReply', 'no-reply@example.com')
-    config.set('notify.templates.reviewCompleteTemplateId', 'review-complete-template-id')
-    config.set('notify.templates.followupCompleteTemplateId', 'followup-complete-template-id')
+    config.set('notify.templates.newReviewClaimTemplateId', 'review-complete-template-id')
+    config.set('notify.templates.newFollowUpClaimTemplateId', 'followup-complete-template-id')
   })
 
   afterEach(() => {

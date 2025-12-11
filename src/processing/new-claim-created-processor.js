@@ -10,7 +10,7 @@ import {
 const MESSAGE_TYPE = 'claimCreated'
 
 export const processNewClaimCreated = async (message, logger, db) => {
-  const { reviewCompleteTemplateId, followupCompleteTemplateId } = config.get('notify.templates')
+  const { newReviewClaimTemplateId, newFollowUpClaimTemplateId } = config.get('notify.templates')
   const noReplyEmailReplyToId = config.get('notify.replyToIdNoReply')
   const carbonCopyEmailAddress = config.get('notify.carbonCopyEmailAddress')
 
@@ -50,7 +50,7 @@ export const processNewClaimCreated = async (message, logger, db) => {
       claimAmount,
       emailReplyToId: noReplyEmailReplyToId,
       notifyTemplateId:
-        claimType === 'FOLLOW_UP' ? followupCompleteTemplateId : reviewCompleteTemplateId
+        claimType === 'FOLLOW_UP' ? newFollowUpClaimTemplateId : newReviewClaimTemplateId
     }
 
     if (carbonCopyEmailAddress) {
