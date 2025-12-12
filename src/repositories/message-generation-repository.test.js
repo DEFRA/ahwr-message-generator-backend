@@ -1,5 +1,6 @@
 import {
   createMessageRequestEntry,
+  getByAgreementRefAndMessageType,
   getByClaimRefAndMessageType,
   redactPII,
   reminderEmailAlreadySent
@@ -74,6 +75,58 @@ describe('message-generation repository', () => {
       expect(mockDb.findOne).toHaveBeenCalledWith({
         claimReference: 'TEMP-O9UD-22F6',
         messageType: 'statusUpdate-5'
+      })
+    })
+  })
+
+  describe('getByAgreementRefAndMessageType', () => {
+    test('should return a result if the agreement reference and message type exist', async () => {
+      const mockData = {
+        id: 123,
+        agreementReference: 'TEMP-O9UD-22F6',
+        messageType: 'agreementCreated',
+        createdAt: '2025-03-24T12:34:56Z',
+        updatedAt: '2025-03-24T12:34:56Z'
+      }
+      mockDb.findOne.mockResolvedValueOnce(mockData)
+
+      const result = await getByAgreementRefAndMessageType(
+        mockDb,
+        'TEMP-O9UD-22F6',
+        'agreementCreated'
+      )
+
+      expect(mockDb.findOne).toHaveBeenCalledWith({
+        agreementReference: 'TEMP-O9UD-22F6',
+        messageType: 'agreementCreated'
+      })
+      expect(result).toEqual(mockData)
+    })
+
+    test('should return null if no result is found', async () => {
+      mockDb.findOne.mockResolvedValueOnce(null)
+
+      const result = await getByAgreementRefAndMessageType(
+        mockDb,
+        'TEMP-O9UD-22F6',
+        'agreementCreated'
+      )
+
+      expect(result).toBeNull()
+    })
+
+    test('should call findOne with uppercase agreementReference', async () => {
+      mockDb.findOne.mockResolvedValueOnce({
+        id: 123,
+        agreementReference: 'temp-O9ud-22f6',
+        messageType: 'agreementCreated'
+      })
+
+      await getByAgreementRefAndMessageType(mockDb, 'TEMP-O9UD-22F6', 'agreementCreated')
+
+      expect(mockDb.findOne).toHaveBeenCalledWith({
+        agreementReference: 'TEMP-O9UD-22F6',
+        messageType: 'agreementCreated'
       })
     })
   })

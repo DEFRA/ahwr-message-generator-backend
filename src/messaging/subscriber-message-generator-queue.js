@@ -2,8 +2,8 @@ import { config } from '../config.js'
 import { SqsSubscriber } from 'ffc-ahwr-common-library'
 import { getLogger } from '../common/helpers/logging/logger.js'
 import { routeStatusUpdateMessage } from './router-status-change.js'
-import { routeDocumentCreatedMessage as processDocumentCreatedMessage } from './router-document-created.js'
 import { processReminderEmailMessage } from '../processing/reminder-email-processor.js'
+import { processNewAgreementCreated } from '../processing/new-agreement-processor.js'
 
 let messageRequestSubscriber
 
@@ -18,7 +18,7 @@ export async function configureAndStart(db) {
     region,
     awsEndpointUrl: endpointUrl,
     async onMessage(message, attributes) {
-      await handleInboundMessage(message, attributes, types, logger, db)
+      await handleInboundMessage(message, attributes, types, logger.child({}), db)
     }
   })
   await messageRequestSubscriber.start()
@@ -35,7 +35,7 @@ export async function handleInboundMessage(message, attributes, types, logger, d
 
   switch (attributes.eventType) {
     case types.documentCreated:
-      return processDocumentCreatedMessage(message, logger, db)
+      return processNewAgreementCreated(message, logger, db)
     case types.statusUpdate:
       return routeStatusUpdateMessage(message, logger, db)
     case types.reminderRequest:

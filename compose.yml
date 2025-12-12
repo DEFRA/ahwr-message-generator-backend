@@ -14,6 +14,7 @@ services:
     volumes:
       - '${TMPDIR:-/tmp}/localstack:/var/lib/localstack'
       - ./compose/start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh
+      - ./compose/IAHW-896I-FTN9.pdf:/tmp/IAHW-896I-FTN9.pdf
     healthcheck:
       test: ['CMD', 'curl', 'localhost:4566']
       interval: 5s
@@ -57,16 +58,26 @@ services:
       AWS_ENDPOINT_URL: http://localstack:4566
       MONGO_URI: mongodb://mongodb:27017/
       USE_PRETTY_PRINT: true
+      APPLICATION_API_URI: "http://appstub:5678/api"
       MESSAGE_GENERATOR_QUEUE_URL: "http://sqs.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_generator_queue"
       MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
-      SFD_PROXY_MESSAGE_TOPIC: "http://sns.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_request"
+      MESSAGE_REQUEST_TOPIC_ARN: "arn:aws:sns:eu-west-2:000000000000:ahwr_message_request"
+      DOCUMENT_BUCKET_NAME: ahwr-documents
     networks:
       - cdp-tenant
     volumes:
       - ./src:/home/node/src
       - ./package.json:/home/node/package.json
+
+  appstub:
+    image: hashicorp/http-echo
+    command: [ "-text={\"name\":\"cadburys world\", \"farmerName\":\"Big Dave\", \"email\":\"nowhere@anywhere.com\", \"orgEmail\":\"org@anywhere.com\"}" ]
+    ports:
+      - "8084:5678"
+    networks:
+      - cdp-tenant
 
 ################################################################################
 
