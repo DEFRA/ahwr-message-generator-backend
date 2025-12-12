@@ -41,7 +41,6 @@ export const sendSFDCommsRequest = async (params) => {
 
   if (validateSFDSchema(sfdMessage, logger)) {
     await publishMessage(sfdMessage, attributes)
-    logger.info('Sent SFD message')
   } else {
     throw new Error('SFD validation error')
   }

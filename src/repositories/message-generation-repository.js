@@ -13,6 +13,13 @@ export const getByClaimRefAndMessageType = (db, claimReference, messageType) => 
   })
 }
 
+export const getByAgreementRefAndMessageType = (db, agreementReference, messageType) => {
+  return db.collection(COLLECTION).findOne({
+    agreementReference: agreementReference.toUpperCase(),
+    messageType
+  })
+}
+
 export const reminderEmailAlreadySent = async (
   db,
   agreementReference,

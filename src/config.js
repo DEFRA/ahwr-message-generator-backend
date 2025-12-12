@@ -188,6 +188,20 @@ const config = convict({
       env: 'AWS_ENDPOINT_URL'
     }
   },
+  s3: {
+    bucketName: {
+      doc: 'Document S3 bucket name',
+      format: String,
+      default: 'document-bucket',
+      env: 'DOCUMENT_BUCKET_NAME'
+    },
+    forcePathStyle: {
+      doc: 'Force path style on S3 bucket',
+      format: Boolean,
+      default: true,
+      env: 'FORCE_PATH_STYLE'
+    }
+  },
   log: {
     isEnabled: {
       doc: 'Is logging enabled',

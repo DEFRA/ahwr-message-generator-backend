@@ -24,7 +24,7 @@ export const processInCheckStatusMessageForEvidenceEmail = async (message, logge
     piHuntRecommended,
     piHuntAllAnimals,
     herdName
-  } = message.body
+  } = message
   const ccAddress = config.get('notify.evidenceCarbonCopyEmailAddress')
   const messageType = `statusChange-${claimStatus}`
   const messageAlreadyGenerated = await getByClaimRefAndMessageType(db, claimReference, messageType)

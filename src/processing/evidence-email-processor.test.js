@@ -51,21 +51,19 @@ describe('process evidence email message', () => {
 
   test('should send an evidence email when it is the first time the claim has the status of in check', async () => {
     const event = {
-      body: {
-        crn: '1100014934',
-        sbi: '106705779',
-        agreementReference: 'AHWR-0AD3-3322',
-        claimReference: 'TEMP-O9UD-22F6',
-        claimStatus: 'IN_CHECK',
-        claimType: 'REVIEW',
-        typeOfLivestock: 'beef',
-        reviewTestResults: 'positive',
-        piHuntRecommended: 'yes',
-        piHuntAllAnimals: 'no',
-        herdName: 'Commercial herd'
-      },
-      messageId: 1
+      crn: '1100014934',
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      claimStatus: 'IN_CHECK',
+      claimType: 'REVIEW',
+      typeOfLivestock: 'beef',
+      reviewTestResults: 'positive',
+      piHuntRecommended: 'yes',
+      piHuntAllAnimals: 'no',
+      herdName: 'Commercial herd'
     }
+
     getByClaimRefAndMessageType.mockResolvedValueOnce(null)
     getLatestContactDetails.mockResolvedValueOnce({
       name: 'Willow Farm',
@@ -108,16 +106,13 @@ describe('process evidence email message', () => {
 
   test('should not send an evidence email to orgEmail and CC when not available', async () => {
     const event = {
-      body: {
-        crn: '1100014934',
-        sbi: '106705779',
-        agreementReference: 'AHWR-0AD3-3322',
-        claimReference: 'TEMP-O9UD-22F6',
-        claimStatus: 'IN_CHECK',
-        claimType: 'REVIEW',
-        typeOfLivestock: 'sheep'
-      },
-      messageId: 1
+      crn: '1100014934',
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      claimStatus: 'IN_CHECK',
+      claimType: 'REVIEW',
+      typeOfLivestock: 'sheep'
     }
 
     getByClaimRefAndMessageType.mockResolvedValueOnce(null)
@@ -164,16 +159,13 @@ describe('process evidence email message', () => {
 
   test('should not send an evidence email to email address if it is the same as orgEmail', async () => {
     const event = {
-      body: {
-        crn: '1100014934',
-        sbi: '106705779',
-        agreementReference: 'AHWR-0AD3-3322',
-        claimReference: 'TEMP-O9UD-22F6',
-        claimStatus: 'IN_CHECK',
-        claimType: 'REVIEW',
-        typeOfLivestock: 'sheep'
-      },
-      messageId: 1
+      crn: '1100014934',
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      claimStatus: 'IN_CHECK',
+      claimType: 'REVIEW',
+      typeOfLivestock: 'sheep'
     }
 
     getByClaimRefAndMessageType.mockResolvedValueOnce(null)
@@ -233,14 +225,11 @@ describe('process evidence email message', () => {
 
   test('should not send an evidence email when the claim has previously had a status of in check', async () => {
     const event = {
-      body: {
-        crn: '1100014934',
-        sbi: '106705779',
-        agreementReference: 'AHWR-0AD3-3322',
-        claimReference: 'TEMP-O9UD-22F6',
-        claimStatus: 'IN_CHECK'
-      },
-      messageId: 1
+      crn: '1100014934',
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      claimStatus: 'IN_CHECK'
     }
 
     getByClaimRefAndMessageType.mockResolvedValueOnce({
@@ -270,16 +259,13 @@ describe('process evidence email message', () => {
 
   test('should not send an evidence email when the evidence email feature flag is not enabled', async () => {
     const event = {
-      body: {
-        crn: '1100014934',
-        sbi: '106705779',
-        agreementReference: 'AHWR-0AD3-3322',
-        claimReference: 'TEMP-O9UD-22F6',
-        claimStatus: 'IN_CHECK',
-        claimType: 'REVIEW',
-        typeOfLivestock: 'dairy'
-      },
-      messageId: 1
+      crn: '1100014934',
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      claimStatus: 'IN_CHECK',
+      claimType: 'REVIEW',
+      typeOfLivestock: 'dairy'
     }
 
     config.set('evidenceEmailEnabled', false)
