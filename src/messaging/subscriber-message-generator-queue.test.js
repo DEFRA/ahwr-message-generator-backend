@@ -9,9 +9,11 @@ import { config } from '../config.js'
 import { routeStatusUpdateMessage } from './router-status-change.js'
 import { processReminderEmailMessage } from '../processing/reminder-email-processor.js'
 import { processNewAgreementCreated } from '../processing/new-agreement-processor.js'
+import { metricsCounter } from '../common/helpers/metrics.js'
 
 jest.mock('ffc-ahwr-common-library')
 jest.mock('../common/helpers/logging/logger.js')
+jest.mock('../common/helpers/metrics.js')
 jest.mock('../processing/new-agreement-processor.js')
 jest.mock('./router-status-change.js')
 jest.mock('../processing/reminder-email-processor.js')
@@ -85,36 +87,40 @@ describe('subscriber-message-generator-queue', () => {
       ).rejects.toThrow('Unsupported event received')
 
       expect(mockLogger.info).toHaveBeenCalledWith(expect.any(Object), 'Received incoming message')
+      expect(metricsCounter).toHaveBeenCalledWith('event-received-unknown-event-type')
       expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
       expect(processNewAgreementCreated).toHaveBeenCalledTimes(0)
       expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call routeStatusUpdateMessage eventType is: ${types.statusUpdate} `, async () => {
+    it(`should call routeStatusUpdateMessage when eventType is: ${types.statusUpdate} `, async () => {
       const mockAttributes = { eventType: types.statusUpdate }
 
       await handleInboundMessage(mockMessage, mockAttributes, types, mockLogger, mockDb)
 
+      expect(metricsCounter).toHaveBeenCalledWith('event-received-claim-status-update')
       expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(1)
       expect(processNewAgreementCreated).toHaveBeenCalledTimes(0)
       expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call processNewAgreementCreated eventType is: ${types.documentCreated} `, async () => {
+    it(`should call processNewAgreementCreated when eventType is: ${types.documentCreated} `, async () => {
       const mockAttributes = { eventType: types.documentCreated }
 
       await handleInboundMessage(mockMessage, mockAttributes, types, mockLogger, mockDb)
 
+      expect(metricsCounter).toHaveBeenCalledWith('event-received-document-created')
       expect(processNewAgreementCreated).toHaveBeenCalledTimes(1)
       expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
       expect(processReminderEmailMessage).toHaveBeenCalledTimes(0)
     })
 
-    it(`should call processReminderEmailMessage eventType is: ${types.reminderRequest} `, async () => {
+    it(`should call processReminderEmailMessage when eventType is: ${types.reminderRequest} `, async () => {
       const mockAttributes = { eventType: types.reminderRequest }
 
       await handleInboundMessage(mockMessage, mockAttributes, types, mockLogger, mockDb)
 
+      expect(metricsCounter).toHaveBeenCalledWith('event-received-reminder-request')
       expect(processReminderEmailMessage).toHaveBeenCalledTimes(1)
       expect(routeStatusUpdateMessage).toHaveBeenCalledTimes(0)
       expect(processNewAgreementCreated).toHaveBeenCalledTimes(0)

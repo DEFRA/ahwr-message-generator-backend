@@ -1,8 +1,7 @@
 import { validateSFDSchema } from './submit-sfd-schema'
-import { ValidationError } from 'joi'
 
 const mockLogger = {
-  warn: jest.fn()
+  error: jest.fn()
 }
 
 describe('validateSFDSchema', () => {
@@ -93,9 +92,18 @@ describe('validateSFDSchema', () => {
     const result = validateSFDSchema(invalidEvent, mockLogger)
 
     expect(result).toBe(false)
-    expect(mockLogger.warn).toHaveBeenCalledWith(
-      new ValidationError('"emailAddress" must be a valid email', []),
-      'Submit SFD message validation error:'
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      {
+        error: expect.any(Object),
+        event: expect.objectContaining({
+          type: 'exception',
+          severity: 'error',
+          category: 'fail-validation',
+          kind: 'outbound-sfd-message-validation',
+          reason: expect.any(String)
+        })
+      },
+      'Submit SFD message validation error'
     )
   })
 

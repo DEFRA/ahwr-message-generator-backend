@@ -35,8 +35,17 @@ export const validateStatusMessageRequest = (logger, event) => {
   })
   if (error) {
     logger.error(
-      { validationError: { details: error.details } },
-      'Inbound status message validation error:'
+      {
+        error,
+        event: {
+          type: 'exception',
+          severity: 'error',
+          category: 'fail-validation',
+          kind: 'inbound-status-message-validation',
+          reason: JSON.stringify(error.details)
+        }
+      },
+      'Inbound status message validation error'
     )
     return false
   }
