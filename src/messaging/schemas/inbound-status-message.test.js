@@ -42,9 +42,16 @@ describe('validateStatusMessageRequest', () => {
       expect(mockedLogger.error).toHaveBeenCalledTimes(1)
       expect(mockedLogger.error).toHaveBeenCalledWith(
         {
-          validationError: expect.any(Object)
+          error: expect.any(Object),
+          event: expect.objectContaining({
+            type: 'exception',
+            severity: 'error',
+            category: 'fail-validation',
+            kind: 'inbound-status-message-validation',
+            reason: expect.any(String)
+          })
         },
-        'Inbound status message validation error:'
+        'Inbound status message validation error'
       )
     }
 

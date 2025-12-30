@@ -19,10 +19,22 @@ const submitSFDSchema = joi.object({
 })
 
 export const validateSFDSchema = (event, logger) => {
-  const validate = submitSFDSchema.validate(event)
+  const { error } = submitSFDSchema.validate(event)
 
-  if (validate.error) {
-    logger.warn(validate.error, 'Submit SFD message validation error:')
+  if (error) {
+    logger.error(
+      {
+        error,
+        event: {
+          type: 'exception',
+          severity: 'error',
+          category: 'fail-validation',
+          kind: 'outbound-sfd-message-validation',
+          reason: JSON.stringify(error.details)
+        }
+      },
+      'Submit SFD message validation error'
+    )
     return false
   }
   return true
