@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "engines": {
-    "node": ">=22.16.0"
+    "node": ">=22.21.1"
   },
   "scripts": {
     "dev": "NODE_ENV=development npm run server:watch",
@@ -53,6 +53,9 @@
     "pino-pretty": "13.0.0",
     "undici": "7.10.0",
     "uuid": "13.0.0"
+  },
+  "overrides": {
+    "brace-expansion": "2.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.27.4",

@@ -11,8 +11,8 @@ module.exports = {
     '<rootDir>/tests/',
     '<rootDir>/jest.config.cjs'
   ],
-  globalSetup: './test/globalSetup.js',
-  globalTeardown: './test/globalTeardown.js',
+  globalSetup: '<rootDir>/test/globalSetup.js',
+  globalTeardown: '<rootDir>/test/globalTeardown.js',
   modulePathIgnorePatterns: ['node_modules'],
   reporters: [
     'default',
