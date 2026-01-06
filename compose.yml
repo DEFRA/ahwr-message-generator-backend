@@ -2,15 +2,17 @@ services:
   localstack:
     image: localstack/localstack:3.0.2
     ports:
-      - '4566:4566' # LocalStack Gateway
-      - '4510-4559:4510-4559' # external services port range
+      - '4567:4566' # LocalStack Gateway
+      - '4610-4659:4610-4659' # external services port range
     env_file:
       - 'compose/aws.env'
     environment:
       DEBUG: ${DEBUG:-1}
       LS_LOG: WARN # Localstack DEBUG Level
-      SERVICES: s3,sqs,sns,firehose
+      SERVICES: s3,sqs,sns
       LOCALSTACK_HOST: 127.0.0.1
+      EXTERNAL_SERVICE_PORTS_START: 4610
+      EXTERNAL_SERVICE_PORTS_END: 4659
     volumes:
       - '${TMPDIR:-/tmp}/localstack:/var/lib/localstack'
       - ./compose/start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh
@@ -24,7 +26,7 @@ services:
       - cdp-tenant
 
   mongodb:
-    image: mongo:6.0.13
+    image: mongo:7.0.24
     networks:
       - cdp-tenant
     ports:
@@ -38,7 +40,7 @@ services:
       context: .
       target: development
     ports:
-      - '3001:3001'
+      - '3007:3001'
     links:
       - 'localstack:localstack'
       - 'mongodb:mongodb'
@@ -60,9 +62,6 @@ services:
       USE_PRETTY_PRINT: true
       APPLICATION_API_URI: "http://appstub:5678/api"
       MESSAGE_GENERATOR_QUEUE_URL: "http://sqs.eu-west-2.127.0.0.1:4566/000000000000/ahwr_message_generator_queue"
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
-      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
-      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
       MESSAGE_REQUEST_TOPIC_ARN: "arn:aws:sns:eu-west-2:000000000000:ahwr_message_request"
       DOCUMENT_BUCKET_NAME: ahwr-documents
     networks:

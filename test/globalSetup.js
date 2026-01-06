@@ -15,8 +15,6 @@ export default async function globalSetup() {
 
   process.env.MONGO_URI = mongoUri
   process.env.MONGO_DATABASE = dbName
-  process.env.MESSAGE_QUEUE_USER = 'dummy'
-  process.env.MESSAGE_QUEUE_PASSWORD = 'dummy'
   global.__MONGOD__ = mongoServer
 
   config.set('mongo.mongoUrl', mongoUri)
