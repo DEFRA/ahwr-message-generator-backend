@@ -102,7 +102,6 @@ const sendMessageToSfdProxy = async (
         error,
         event: {
           type: 'exception',
-          severity: `error`,
           category: 'failed-processing'
         }
       },

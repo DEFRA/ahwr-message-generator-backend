@@ -39,7 +39,6 @@ export const validateStatusMessageRequest = (logger, event) => {
         error,
         event: {
           type: 'exception',
-          severity: 'error',
           category: 'fail-validation',
           kind: 'inbound-status-message-validation',
           reason: JSON.stringify(error.details)

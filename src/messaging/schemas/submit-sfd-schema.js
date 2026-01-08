@@ -27,7 +27,6 @@ export const validateSFDSchema = (event, logger) => {
         error,
         event: {
           type: 'exception',
-          severity: 'error',
           category: 'fail-validation',
           kind: 'outbound-sfd-message-validation',
           reason: JSON.stringify(error.details)

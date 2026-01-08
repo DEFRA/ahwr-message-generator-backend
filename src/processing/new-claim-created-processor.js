@@ -155,7 +155,6 @@ const sendClaimConfirmationEmail = async (params) => {
         error,
         event: {
           type: 'exception',
-          severity: `error`,
           category: 'failed-processing'
         }
       },

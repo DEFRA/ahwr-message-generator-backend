@@ -38,7 +38,6 @@ describe('getLatestContactDetails', () => {
         error,
         event: {
           category: 'failed-request',
-          severity: 'error',
           type: 'exception'
         }
       },

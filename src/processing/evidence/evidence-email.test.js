@@ -340,8 +340,7 @@ describe('sendEvidenceEmail', () => {
         error,
         event: {
           type: 'exception',
-          category: 'failed-processing',
-          severity: 'error'
+          category: 'failed-processing'
         }
       },
       `Error sending ${params.addressType} email. Error: ${error.message}`

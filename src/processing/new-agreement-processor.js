@@ -121,7 +121,6 @@ const sendEmailRequest = async (requestParams) => {
         error,
         event: {
           type: 'exception',
-          severity: `error`,
           category: 'failed-processing'
         }
       },

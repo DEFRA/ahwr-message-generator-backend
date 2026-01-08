@@ -198,7 +198,6 @@ describe('processReminderEmailMessage', () => {
         {
           error,
           event: {
-            severity: 'error',
             type: 'exception',
             category: 'failed-processing'
           }
