@@ -277,7 +277,6 @@ describe('process new claim email message', () => {
         error,
         event: {
           category: 'failed-processing',
-          severity: 'error',
           type: 'exception'
         }
       },

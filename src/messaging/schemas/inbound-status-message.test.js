@@ -45,7 +45,6 @@ describe('validateStatusMessageRequest', () => {
           error: expect.any(Object),
           event: expect.objectContaining({
             type: 'exception',
-            severity: 'error',
             category: 'fail-validation',
             kind: 'inbound-status-message-validation',
             reason: expect.any(String)

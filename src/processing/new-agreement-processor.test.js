@@ -244,7 +244,6 @@ describe('process new agreement email message', () => {
         error,
         event: {
           category: 'failed-processing',
-          severity: 'error',
           type: 'exception'
         }
       },

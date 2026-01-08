@@ -16,7 +16,6 @@ export async function getLatestContactDetails(applicationReference, logger) {
         error,
         event: {
           type: 'exception',
-          severity: `error`,
           category: 'failed-request'
         }
       },
