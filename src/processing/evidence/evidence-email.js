@@ -118,7 +118,7 @@ export const sendEvidenceEmail = async (params) => {
       event: {
         type: `evidence-email-requested-${claimType.toLowerCase()}`,
         reference: claimReference,
-        outcome: true,
+        outcome: 'true',
         kind: addressType,
         category: `${typeOfLivestock} - templateId:${notifyTemplateId}`
       }

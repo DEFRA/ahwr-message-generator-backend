@@ -109,7 +109,7 @@ describe('sendEvidenceEmail', () => {
             type: 'evidence-email-requested-review',
             category: `${livestock} - templateId:550e8400-e29b-41d4-a716-446655440000`,
             kind: params.addressType,
-            outcome: true,
+            outcome: 'true',
             reference: params.claimReference
           }
         })
@@ -151,7 +151,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'beef - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })
@@ -185,7 +185,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'dairy - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })
@@ -218,7 +218,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'beef - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })
@@ -249,7 +249,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'pigs - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })
@@ -282,7 +282,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'sheep - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })
@@ -312,7 +312,7 @@ describe('sendEvidenceEmail', () => {
           type: 'evidence-email-requested-follow_up',
           category: 'Goat - templateId:111e8400-e29b-41d4-a716-446655440000',
           kind: params.addressType,
-          outcome: true,
+          outcome: 'true',
           reference: params.claimReference
         }
       })

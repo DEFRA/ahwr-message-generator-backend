@@ -165,7 +165,7 @@ describe('processReminderEmailMessage', () => {
     expect(mockLogger.info).toHaveBeenCalledWith({
       event: {
         type: 'reminder-email-send-proxy',
-        outcome: true,
+        outcome: 'true',
         reference: 'IAHW-BEKR-AWIU',
         kind: 'ba2bfa67-6cc8-4536-990d-5333019ed710',
         category: message.reminderType

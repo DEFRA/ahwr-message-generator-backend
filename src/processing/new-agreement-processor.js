@@ -109,7 +109,7 @@ const sendEmailRequest = async (requestParams) => {
       event: {
         type: `agreement-email-requested`,
         reference,
-        outcome: true,
+        outcome: 'true',
         kind: addressType,
         category: `templateId:${templateId}`
       }
