@@ -78,7 +78,7 @@ describe('process new claim email message', () => {
     expect(mockedLogger.info).toHaveBeenCalledWith({
       event: {
         type: 'claim-email-requested',
-        outcome: true,
+        outcome: 'true',
         reference: claimReference,
         kind: addressType,
         category: expect.stringMatching(`- templateId:${notifyTemplateId}`)

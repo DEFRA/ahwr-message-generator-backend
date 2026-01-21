@@ -72,7 +72,7 @@ describe('process new agreement email message', () => {
     expect(mockedLogger.info).toHaveBeenCalledWith({
       event: {
         type: 'agreement-email-requested',
-        outcome: true,
+        outcome: 'true',
         reference: 'IAHW-0AD3-3322',
         kind: addressType,
         category: expect.stringMatching(`templateId:${notifyTemplateId}`)

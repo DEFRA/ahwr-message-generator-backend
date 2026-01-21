@@ -142,7 +142,7 @@ const sendClaimConfirmationEmail = async (params) => {
       event: {
         type: `claim-email-requested`,
         reference: claimReference,
-        outcome: true,
+        outcome: 'true',
         kind: addressType,
         category: `${typeOfLivestock} - templateId:${notifyTemplateId}`
       }

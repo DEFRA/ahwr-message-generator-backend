@@ -90,7 +90,7 @@ const sendMessageToSfdProxy = async (
       event: {
         type: `reminder-email-send-proxy`,
         reference: agreementReference,
-        outcome: true,
+        outcome: 'true',
         kind: notifyTemplateId,
         category: reminderType
       }
