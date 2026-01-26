@@ -1,6 +1,8 @@
 import {
   createMessageRequestEntry,
+  getByAgreementRef,
   getByAgreementRefAndMessageType,
+  getByClaimRef,
   getByClaimRefAndMessageType,
   redactPII,
   reminderEmailAlreadySent
@@ -8,12 +10,16 @@ import {
 
 describe('message-generation repository', () => {
   const mockLogger = { info: jest.fn() }
+  const mockToArray = jest.fn()
   const mockDb = {
     collection: jest.fn().mockReturnThis(),
     updateMany: jest.fn(),
     insertOne: jest.fn(),
     findOne: jest.fn(),
-    countDocuments: jest.fn()
+    countDocuments: jest.fn(),
+    find: jest.fn(() => ({
+      toArray: mockToArray
+    }))
   }
 
   beforeEach(async () => {
@@ -32,6 +38,36 @@ describe('message-generation repository', () => {
         id: 'test-id-1',
         someOtherStuff: 'im-the-other-stuff '
       })
+    })
+  })
+
+  describe('getByClaimRef', () => {
+    test('should return documents when the claim reference matches', async () => {
+      const mockData = [
+        {
+          id: 123,
+          claimReference: 'TEMP-O9UD-22F6',
+          messageType: 'statusUpdate-5',
+          createdAt: '2025-03-24T12:34:56Z',
+          updatedAt: '2025-03-24T12:34:56Z'
+        }
+      ]
+      mockToArray.mockResolvedValueOnce(mockData)
+
+      const result = await getByClaimRef(mockDb, 'TEMP-O9UD-22F6')
+
+      expect(mockDb.find).toHaveBeenCalledWith({
+        claimReference: 'TEMP-O9UD-22F6'
+      })
+      expect(result).toEqual(mockData)
+    })
+
+    test('should return emptry array if no result is found', async () => {
+      mockToArray.mockResolvedValueOnce([])
+
+      const result = await getByClaimRef(mockDb, 'TEMP-O9UD-22F6')
+
+      expect(result).toEqual([])
     })
   })
 
@@ -76,6 +112,36 @@ describe('message-generation repository', () => {
         claimReference: 'TEMP-O9UD-22F6',
         messageType: 'statusUpdate-5'
       })
+    })
+  })
+
+  describe('getByAgreementRef', () => {
+    test('should return documents when the agreement reference matches', async () => {
+      const mockData = [
+        {
+          id: 123,
+          agreementReference: 'TEMP-O9UD-22F6',
+          messageType: 'statusUpdate-5',
+          createdAt: '2025-03-24T12:34:56Z',
+          updatedAt: '2025-03-24T12:34:56Z'
+        }
+      ]
+      mockToArray.mockResolvedValueOnce(mockData)
+
+      const result = await getByAgreementRef(mockDb, 'TEMP-O9UD-22F6')
+
+      expect(mockDb.find).toHaveBeenCalledWith({
+        agreementReference: 'TEMP-O9UD-22F6'
+      })
+      expect(result).toEqual(mockData)
+    })
+
+    test('should return emptry array if no result is found', async () => {
+      mockToArray.mockResolvedValueOnce([])
+
+      const result = await getByAgreementRef(mockDb, 'TEMP-O9UD-22F6')
+
+      expect(result).toEqual([])
     })
   })
 

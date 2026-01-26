@@ -6,11 +6,29 @@ export const createMessageRequestEntry = async (db, data) => {
   await db.collection(COLLECTION).insertOne(data)
 }
 
+export const getByClaimRef = (db, claimReference) => {
+  return db
+    .collection(COLLECTION)
+    .find({
+      claimReference: claimReference.toUpperCase()
+    })
+    .toArray()
+}
+
 export const getByClaimRefAndMessageType = (db, claimReference, messageType) => {
   return db.collection(COLLECTION).findOne({
     claimReference: claimReference.toUpperCase(),
     messageType
   })
+}
+
+export const getByAgreementRef = (db, agreementReference) => {
+  return db
+    .collection(COLLECTION)
+    .find({
+      agreementReference: agreementReference.toUpperCase()
+    })
+    .toArray()
 }
 
 export const getByAgreementRefAndMessageType = (db, agreementReference, messageType) => {
