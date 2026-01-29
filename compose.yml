@@ -23,12 +23,12 @@ services:
       start_period: 5s
       retries: 3
     networks:
-      - cdp-tenant
+      - ahwr-local
 
   mongodb:
     image: mongo:7.0.24
     networks:
-      - cdp-tenant
+      - ahwr-local
     ports:
       - '27018:27017'
     volumes:
@@ -65,7 +65,7 @@ services:
       MESSAGE_REQUEST_TOPIC_ARN: "arn:aws:sns:eu-west-2:000000000000:ahwr_message_request"
       DOCUMENT_BUCKET_NAME: ahwr-documents
     networks:
-      - cdp-tenant
+      - ahwr-local
     volumes:
       - ./src:/home/node/src
       - ./package.json:/home/node/package.json
@@ -76,7 +76,7 @@ services:
     ports:
       - "8084:5678"
     networks:
-      - cdp-tenant
+      - ahwr-local
 
 ################################################################################
 
@@ -84,6 +84,6 @@ volumes:
   mongodb-data:
 
 networks:
-  cdp-tenant:
-    driver: bridge
-    name: cdp-tenant
+  ahwr-local:
+    external: true
+    name: ahwr-local
