@@ -5,7 +5,8 @@ import {
   getByClaimRef,
   getByClaimRefAndMessageType,
   redactPII,
-  reminderEmailAlreadySent
+  reminderEmailAlreadySent,
+  createMessageGenerationIndexes
 } from './message-generation-repository.js'
 
 describe('message-generation repository', () => {
@@ -307,6 +308,26 @@ describe('message-generation repository', () => {
       expect(mockLogger.info).toHaveBeenCalledWith(
         `No message generation entries updated for agreementReference: ${agreementReferences}`
       )
+    })
+  })
+
+  describe('createMessageGenerationIndexes', () => {
+    const mockCollection = {
+      createIndex: jest.fn()
+    }
+    const mockDb = {
+      collection: jest.fn(() => mockCollection)
+    }
+
+    it('should create indexes', async () => {
+      await createMessageGenerationIndexes(mockDb)
+
+      expect(mockDb.collection).toHaveBeenCalledWith('messagegeneration')
+      expect(mockCollection.createIndex).toHaveBeenCalledWith({
+        agreementReference: 1,
+        messageType: 1
+      })
+      expect(mockCollection.createIndex).toHaveBeenCalledWith({ claimReference: 1 })
     })
   })
 })

@@ -2,6 +2,16 @@ import { REDACT_PII_VALUES } from 'ffc-ahwr-common-library'
 
 const COLLECTION = 'messagegeneration'
 
+export const createMessageGenerationIndexes = async (db) => {
+  await db.collection(COLLECTION).createIndex({
+    agreementReference: 1,
+    messageType: 1
+  })
+  await db.collection(COLLECTION).createIndex({
+    claimReference: 1
+  })
+}
+
 export const createMessageRequestEntry = async (db, data) => {
   await db.collection(COLLECTION).insertOne(data)
 }
