@@ -8,7 +8,8 @@ export const createMessageGenerationIndexes = async (db) => {
     messageType: 1
   })
   await db.collection(COLLECTION).createIndex({
-    claimReference: 1
+    claimReference: 1,
+    messageType: 1
   })
 }
 

@@ -327,7 +327,10 @@ describe('message-generation repository', () => {
         agreementReference: 1,
         messageType: 1
       })
-      expect(mockCollection.createIndex).toHaveBeenCalledWith({ claimReference: 1 })
+      expect(mockCollection.createIndex).toHaveBeenCalledWith({
+        claimReference: 1,
+        messageType: 1
+      })
     })
   })
 })
