@@ -1,6 +1,6 @@
 # ahwr-message-generator-backend
 
-Core delivery platform Node.js Backend Template.
+Created from the Core delivery platform Node.js Backend Template.
 
 - [Requirements](#requirements)
   - [Node.js](#nodejs)
@@ -25,6 +25,19 @@ Core delivery platform Node.js Backend Template.
   - [SonarCloud](#sonarcloud)
 - [Licence](#licence)
   - [About the licence](#about-the-licence)
+
+# Service Purpose
+This service is responsible for generating messages to be sent out via the SFD comms proxy.
+It is invoked by input messages on it's input SQS queue, which subscribes to multiple SNS topics to listen to various
+criteria that could be triggers for generating outbound comms requests.
+
+# Service features
+- Listens to an SQS queue for messages containing details of events that should trigger comms to be sent out
+  - Status change messages for claims can trigger outbound request for new claim email, or in the future request for evidence
+  - Reminder request messages can trigger outbound request for reminder emails to be sent out
+  - Application created emails can be triggered by messages from the application service when a new application is created
+- Saves an audit to the database of the request
+- Forwards request on to the FCP SFD Comms component via an output SNS topic
 
 ## Requirements
 
@@ -58,20 +71,18 @@ To run the application in `development` mode run:
 npm run dev
 ```
 
+OR to run dockerised locally:
+
+```bash
+./scripts/start
+```
+
 ### Testing
 
 To test the application run:
 
 ```bash
 npm run test
-```
-
-### Production
-
-To mimic the application running in `production` mode locally run:
-
-```bash
-npm start
 ```
 
 ### Npm scripts
@@ -106,11 +117,11 @@ git config --global core.autocrlf false
 
 ## API endpoints
 
-| Endpoint             | Description                    |
-| :------------------- | :----------------------------- |
-| `GET: /health`       | Health                         |
-| `GET: /example    `  | Example API (remove as needed) |
-| `GET: /example/<id>` | Example API (remove as needed) |
+| Endpoint                                     | Description                                                                                                     |
+|:---------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
+| `GET: /health`                               | Health                                                                                                          |
+| `POST: /api/redact/pii`                      | Request to redact all PII held in database for a given reference                                                |
+| `GET: /api/support/message-generation`       | Request the database view of message generation entries for a given ref. For use in support area of back office |
 
 ## Development helpers
 
@@ -214,10 +225,9 @@ docker run -e PORT=3001 -p 3001:3001 ahwr-message-generator-backend
 A local environment with:
 
 - Localstack for AWS services (S3, SQS)
-- Redis
 - MongoDB
 - This service.
-- A commented out frontend example.
+- A stub version of the application backend.
 
 ```bash
 docker compose up --build -d
@@ -230,7 +240,8 @@ the [.github/example.dependabot.yml](.github/example.dependabot.yml) to `.github
 
 ### SonarCloud
 
-Instructions for setting up SonarCloud can be found in [sonar-project.properties](./sonar-project.properties)
+Sonarcloud is configured for this repository, and will be triggered by pull requests.
+You can view the SonarCloud dashboard for this repository at: https://sonarcloud.io/project/overview?id=DEFRA_ahwr-message-generator-backend
 
 ## Licence
 
