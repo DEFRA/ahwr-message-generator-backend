@@ -53,6 +53,29 @@ const config = convict({
     default: 'https://ahwr-application-backend.dev.cdp-int.defra.cloud/api',
     env: 'APPLICATION_API_URI'
   },
+  apiKeys: {
+    backofficeUi: {
+      doc: 'API key to allow backoffice API access',
+      format: String,
+      default: 'bui-not-set',
+      sensitive: true,
+      env: 'BACKOFFICE_UI_API_KEY'
+    },
+    applicationBackEnd: {
+      doc: 'API key to allow application backend API access',
+      format: String,
+      default: 'abe-not-set',
+      sensitive: true,
+      env: 'APPLICATION_BACKEND_API_KEY'
+    },
+    messageGenerator: {
+      doc: 'Service own API key to hit other backend APIs',
+      format: String,
+      default: 'own-key-not-set',
+      sensitive: true,
+      env: 'MESSAGE_GENERATOR_API_KEY'
+    }
+  },
   notify: {
     carbonCopyEmailAddress: {
       doc: 'Email address to be CCed on all emails sent via Notify',
