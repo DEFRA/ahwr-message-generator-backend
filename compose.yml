@@ -66,6 +66,7 @@ services:
       DOCUMENT_BUCKET_NAME: ahwr-documents
       BACKOFFICE_UI_API_KEY: ${BACKOFFICE_UI_API_KEY:-446dcdbe-e02c-4d16-a266-001bbbd5f089}
       APPLICATION_BACKEND_API_KEY: ${APPLICATION_BACKEND_API_KEY:-fab78725-3037-45ed-ad2e-28cd86e70ff8}
+      MESSAGE_GENERATOR_API_KEY: ${MESSAGE_GENERATOR_API_KEY:-5a6de8eb-52cf-4f60-aaff-3a1a73757dfd}
     networks:
       - ahwr-local
     volumes:
