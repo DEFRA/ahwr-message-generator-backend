@@ -23,7 +23,10 @@ describe('getLatestContactDetails', () => {
 
     const result = await getLatestContactDetails(applicationReference, mockLogger)
 
-    expect(wreck.get).toHaveBeenCalledWith(endpoint, { json: true })
+    expect(wreck.get).toHaveBeenCalledWith(endpoint, {
+      json: true,
+      headers: { 'x-api-key': 'own-key-not-set' }
+    })
     expect(result).toEqual({ name: 'John Doe', email: 'john.doe@example.com' })
   })
 

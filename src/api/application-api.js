@@ -6,7 +6,10 @@ export async function getLatestContactDetails(applicationReference, logger) {
   const endpoint = `${config.get('applicationApiUri')}/applications/latest-contact-details/${applicationReference}`
 
   try {
-    const { payload } = await wreck.get(endpoint, { json: true })
+    const { payload } = await wreck.get(endpoint, {
+      json: true,
+      headers: { 'x-api-key': config.get('apiKeys.messageGenerator') }
+    })
     logger.info('Retrieved latest contact details')
 
     return payload

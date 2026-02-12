@@ -67,6 +67,13 @@ const config = convict({
       default: 'abe-not-set',
       sensitive: true,
       env: 'APPLICATION_BACKEND_API_KEY'
+    },
+    messageGenerator: {
+      doc: 'Service own API key to hit other backend APIs',
+      format: String,
+      default: 'own-key-not-set',
+      sensitive: true,
+      env: 'MESSAGE_GENERATOR_API_KEY'
     }
   },
   notify: {
