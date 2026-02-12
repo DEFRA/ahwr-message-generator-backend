@@ -13,6 +13,7 @@ import {
   configureAndStart,
   stopSubscriber
 } from './messaging/subscriber-message-generator-queue.js'
+import { authPlugin } from './plugins/auth.js'
 
 export async function createServer() {
   setupProxy()
@@ -57,6 +58,7 @@ export async function createServer() {
       plugin: mongoDb,
       options: config.get('mongo')
     },
+    authPlugin,
     router
   ])
 
