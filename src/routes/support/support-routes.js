@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { getMessageGenerationHandler } from './support-controller.js'
+import { getMessageGenerationHandler, supportQueueMessagesHandler } from './support-controller.js'
 
 export const supportRoutes = [
   {
@@ -14,6 +14,20 @@ export const supportRoutes = [
         }).xor('agreementReference', 'claimReference')
       },
       handler: getMessageGenerationHandler
+    }
+  },
+  {
+    method: 'GET',
+    path: '/api/support/queue-messages',
+    options: {
+      description: 'Get queue messages by url',
+      validate: {
+        query: Joi.object({
+          queueUrl: Joi.string().required(),
+          limit: Joi.string().optional()
+        })
+      },
+      handler: supportQueueMessagesHandler
     }
   }
 ]
