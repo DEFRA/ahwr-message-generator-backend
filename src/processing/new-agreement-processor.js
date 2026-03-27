@@ -7,6 +7,7 @@ import {
   getByAgreementRefAndMessageType
 } from '../repositories/message-generation-repository.js'
 import { fetchBlob } from '../storage/s3-interactions.js'
+import { APPLICATION_REFERENCE_PREFIX_POULTRY } from 'ffc-ahwr-common-library'
 
 const MESSAGE_TYPE = 'agreementCreated'
 
@@ -132,8 +133,11 @@ const sendEmailRequest = async (requestParams) => {
 }
 
 const generateDefaultRequestParams = (reference, name, userType, blob) => {
-  const { existingUserAgreementTemplateId, newUserAgreementTemplateId } =
-    config.get('notify.templates')
+  const {
+    existingUserAgreementTemplateId,
+    newUserAgreementTemplateId,
+    poultryNewUserAgreementTemplateId
+  } = config.get('notify.templates')
   const noReplyEmailReplyToId = config.get('notify.replyToIdNoReply')
   const personalisation = {
     name,
@@ -141,8 +145,14 @@ const generateDefaultRequestParams = (reference, name, userType, blob) => {
     link_to_file: prepareUpload(blob)
   }
 
-  const templateIdToUse =
-    userType === 'newUser' ? newUserAgreementTemplateId : existingUserAgreementTemplateId
+  let templateIdToUse
+
+  if (reference.startsWith(APPLICATION_REFERENCE_PREFIX_POULTRY)) {
+    templateIdToUse = poultryNewUserAgreementTemplateId
+  } else {
+    templateIdToUse =
+      userType === 'newUser' ? newUserAgreementTemplateId : existingUserAgreementTemplateId
+  }
 
   return {
     personalisation,

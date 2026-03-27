@@ -143,6 +143,12 @@ const config = convict({
         format: String,
         default: '',
         env: 'EXISTING_USER_AGREEMENT_TEMPLATE_ID'
+      },
+      poultryNewUserAgreementTemplateId: {
+        doc: 'Notify email template ID for poultry new user agreement emails',
+        format: String,
+        default: '',
+        env: 'POULTRY_NEW_USER_AGREEMENT_TEMPLATE_ID'
       }
     }
   },
