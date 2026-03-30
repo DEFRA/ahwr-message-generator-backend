@@ -17,6 +17,7 @@ services:
       - '${TMPDIR:-/tmp}/localstack:/var/lib/localstack'
       - ./compose/start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh
       - ./compose/IAHW-896I-FTN9.pdf:/tmp/IAHW-896I-FTN9.pdf
+      - ./compose/POUL-896I-FTN9.pdf:/tmp/POUL-896I-FTN9.pdf
     healthcheck:
       test: ['CMD', 'curl', 'localhost:4566']
       interval: 5s

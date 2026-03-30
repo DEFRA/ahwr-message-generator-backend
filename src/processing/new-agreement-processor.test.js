@@ -28,6 +28,7 @@ describe('process new agreement email message', () => {
     config.set('notify.replyToIdNoReply', 'no-reply@example.com')
     config.set('notify.templates.newUserAgreementTemplateId', 'new-user-template-id')
     config.set('notify.templates.existingUserAgreementTemplateId', 'existing-user-template-id')
+    config.set('notify.templates.poultryNewUserAgreementTemplateId', 'poultry-new-user-template-id')
 
     fetchBlob.mockResolvedValueOnce(Buffer.from('PDF-1.4 test pdf content'))
   })
@@ -47,17 +48,18 @@ describe('process new agreement email message', () => {
   const checkNewAgreementEmailSendAndEventRaised = (
     emailAddress,
     notifyTemplateId,
-    addressType
+    addressType,
+    agreementReference = 'IAHW-0AD3-3322'
   ) => {
     expect(sendSFDCommsRequest).toHaveBeenCalledWith({
       emailAddress,
       emailReplyToId: 'no-reply@example.com',
-      agreementReference: 'IAHW-0AD3-3322',
+      agreementReference,
       crn: '1100014934',
       sbi: '106705779',
       notifyTemplateId,
       customParams: {
-        reference: 'IAHW-0AD3-3322',
+        reference: agreementReference,
         name: 'Willow Farm',
         link_to_file: {
           confirm_email_before_download: null,
@@ -73,7 +75,7 @@ describe('process new agreement email message', () => {
       event: {
         type: 'agreement-email-requested',
         outcome: 'true',
-        reference: 'IAHW-0AD3-3322',
+        reference: agreementReference,
         kind: addressType,
         category: expect.stringMatching(`templateId:${notifyTemplateId}`)
       }
@@ -249,5 +251,58 @@ describe('process new agreement email message', () => {
       },
       `Error sending CC new agreement email.`
     )
+  })
+
+  test('should send poultry agreement email when poultry', async () => {
+    getByAgreementRefAndMessageType.mockResolvedValueOnce(null)
+    getLatestContactDetails.mockResolvedValueOnce({
+      name: 'Willow Farm',
+      orgEmail: 'willowfarm@gmail.com',
+      farmerName: 'John Jim Doe',
+      email: 'john.doe@gmail.com'
+    })
+
+    await processNewAgreementCreated(
+      {
+        ...eventBody,
+        applicationReference: 'POUL-0AD3-3322',
+        documentLocation: '106705779/POUL-0AD3-3322.pdf'
+      },
+      mockedLogger,
+      mockDb
+    )
+
+    expect(sendSFDCommsRequest).toHaveBeenCalledTimes(3)
+    checkNewAgreementEmailSendAndEventRaised(
+      'cc@example.com',
+      'poultry-new-user-template-id',
+      'CC',
+      'POUL-0AD3-3322'
+    )
+    checkNewAgreementEmailSendAndEventRaised(
+      'willowfarm@gmail.com',
+      'poultry-new-user-template-id',
+      'orgEmail',
+      'POUL-0AD3-3322'
+    )
+    checkNewAgreementEmailSendAndEventRaised(
+      'john.doe@gmail.com',
+      'poultry-new-user-template-id',
+      'email',
+      'POUL-0AD3-3322'
+    )
+    expect(createMessageRequestEntry).toHaveBeenCalledWith(mockDb, {
+      agreementReference: 'POUL-0AD3-3322',
+      messageType: 'agreementCreated',
+      data: {
+        orgName: 'Willow Farm',
+        orgEmail: 'willowfarm@gmail.com',
+        email: 'john.doe@gmail.com',
+        crn: '1100014934',
+        sbi: '106705779',
+        documentLocation: '106705779/POUL-0AD3-3322.pdf',
+        userType: 'newUser'
+      }
+    })
   })
 })
