@@ -1,1 +1,2 @@
-npm run git:pre-commit-hook
+pre-commit run --all-files
+lint-staged

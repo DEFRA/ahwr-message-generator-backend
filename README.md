@@ -27,11 +27,13 @@ Created from the Core delivery platform Node.js Backend Template.
   - [About the licence](#about-the-licence)
 
 # Service Purpose
+
 This service is responsible for generating messages to be sent out via the SFD comms proxy.
 It is invoked by input messages on it's input SQS queue, which subscribes to multiple SNS topics to listen to various
 criteria that could be triggers for generating outbound comms requests.
 
 # Service features
+
 - Listens to an SQS queue for messages containing details of events that should trigger comms to be sent out
   - Status change messages for claims can trigger outbound request for new claim email, or in the future request for evidence
   - Reminder request messages can trigger outbound request for reminder emails to be sent out
@@ -40,6 +42,10 @@ criteria that could be triggers for generating outbound comms requests.
 - Forwards request on to the FCP SFD Comms component via an output SNS topic
 
 ## Requirements
+
+### pre-commit
+
+Please install [pre-commit](https://pre-commit.com/), as it is used to scan commits for secrets using [Gitleaks](https://github.com/gitleaks/gitleaks).
 
 ### Node.js
 
@@ -117,11 +123,11 @@ git config --global core.autocrlf false
 
 ## API endpoints
 
-| Endpoint                                     | Description                                                                                                     |
-|:---------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
-| `GET: /health`                               | Health                                                                                                          |
-| `POST: /api/redact/pii`                      | Request to redact all PII held in database for a given reference                                                |
-| `GET: /api/support/message-generation`       | Request the database view of message generation entries for a given ref. For use in support area of back office |
+| Endpoint                               | Description                                                                                                     |
+| :------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `GET: /health`                         | Health                                                                                                          |
+| `POST: /api/redact/pii`                | Request to redact all PII held in database for a given reference                                                |
+| `GET: /api/support/message-generation` | Request the database view of message generation entries for a given ref. For use in support area of back office |
 
 ## Development helpers
 
