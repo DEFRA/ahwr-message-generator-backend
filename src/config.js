@@ -149,6 +149,12 @@ const config = convict({
         format: String,
         default: '',
         env: 'POULTRY_NEW_USER_AGREEMENT_TEMPLATE_ID'
+      },
+      poultryNewReviewClaimTemplateId: {
+        doc: 'Notify email template ID for poultry new review claim emails',
+        format: String,
+        default: '',
+        env: 'POULTRY_NEW_REVIEW_CLAIM_TEMPLATE_ID'
       }
     }
   },

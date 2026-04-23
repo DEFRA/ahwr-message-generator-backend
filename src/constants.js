@@ -13,5 +13,14 @@ export const LIVESTOCK_TO_READABLE_SPECIES = {
   sheep: 'Sheep'
 }
 
+export const POULTRY_TO_READABLE_SPECIES = {
+  'laying-hens': 'Laying hens',
+  breeders: 'Breeders',
+  broilers: 'Broilers',
+  ducks: 'Ducks',
+  geese: 'Geese',
+  turkeys: 'Turkeys'
+}
+
 export const getHerdNameLabel = (typeOfLivestock) =>
   typeOfLivestock === TYPE_OF_LIVESTOCK.SHEEP ? 'Flock name' : 'Herd name'
