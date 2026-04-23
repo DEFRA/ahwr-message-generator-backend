@@ -10,24 +10,27 @@ const REFERENCE_LENGTH = 14
 const crn = joi.number().min(CRN_MIN_VALUE).max(CRN_MAX_VALUE)
 const sbi = joi.number().min(SBI_MIN_VALUE).max(SBI_MAX_VALUE).required()
 
-const inboundStatusMessageSchema = joi.object({
-  crn,
-  sbi,
-  agreementReference: joi.string().required().length(REFERENCE_LENGTH),
-  claimReference: joi.string().required().length(REFERENCE_LENGTH),
-  claimStatus: joi
-    .string()
-    .valid(...Object.values(STATUS))
-    .required(),
-  claimType: joi.string().required(),
-  typeOfLivestock: joi.string().required(),
-  dateTime: joi.date().iso().required(),
-  reviewTestResults: joi.string().optional(),
-  piHuntRecommended: joi.string().optional(),
-  piHuntAllAnimals: joi.string().optional(),
-  herdName: joi.string().required(),
-  claimAmount: joi.number().optional()
-})
+const inboundStatusMessageSchema = joi
+  .object({
+    crn,
+    sbi,
+    agreementReference: joi.string().required().length(REFERENCE_LENGTH),
+    claimReference: joi.string().required().length(REFERENCE_LENGTH),
+    claimStatus: joi
+      .string()
+      .valid(...Object.values(STATUS))
+      .required(),
+    claimType: joi.string().required(),
+    typeOfLivestock: joi.string(),
+    typesOfPoultry: joi.array().items(joi.string()).min(1),
+    dateTime: joi.date().iso().required(),
+    reviewTestResults: joi.string().optional(),
+    piHuntRecommended: joi.string().optional(),
+    piHuntAllAnimals: joi.string().optional(),
+    herdName: joi.string().required(),
+    claimAmount: joi.number().optional()
+  })
+  .xor('typeOfLivestock', 'typesOfPoultry')
 
 export const validateStatusMessageRequest = (logger, event) => {
   const { error } = inboundStatusMessageSchema.validate(event, {

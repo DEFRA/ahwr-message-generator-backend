@@ -26,6 +26,15 @@ describe('validateStatusMessageRequest', () => {
     expect(mockedLogger.error).toHaveBeenCalledTimes(0)
   })
 
+  test('returns true if the validation is successful for poultry message', () => {
+    const validPoultryInputMessage = { ...validInputMessage }
+    delete validPoultryInputMessage.typeOfLivestock
+    validPoultryInputMessage.typesOfPoultry = ['laying-hens', 'ducks']
+
+    expect(validateStatusMessageRequest(mockedLogger, validPoultryInputMessage)).toBeTruthy()
+    expect(mockedLogger.error).toHaveBeenCalledTimes(0)
+  })
+
   test('returns true if the validation is successful, including optional amount', () => {
     expect(
       validateStatusMessageRequest(mockedLogger, {
@@ -107,6 +116,28 @@ describe('validateStatusMessageRequest', () => {
       const invalidMessage = { ...validInputMessage, herdName: undefined }
 
       expectFalseyResultAndValidationErrorSetInLogBinding(invalidMessage)
+    })
+
+    test('returns false when validation fails due to missing typeOfLivestock and typesOfPoultry', () => {
+      const invalidInputMessage = { ...validInputMessage }
+      delete invalidInputMessage.typeOfLivestock
+
+      expectFalseyResultAndValidationErrorSetInLogBinding(invalidInputMessage)
+    })
+
+    test('returns false when validation fails due to typeOfLivestock and typesOfPoultry both present', () => {
+      const invalidInputMessage = { ...validInputMessage }
+      invalidInputMessage.typesOfPoultry = ['laying-hens', 'ducks']
+
+      expectFalseyResultAndValidationErrorSetInLogBinding(invalidInputMessage)
+    })
+
+    test('returns false when validation fails due to typesOfPoultry empty array', () => {
+      const invalidInputMessage = { ...validInputMessage }
+      delete invalidInputMessage.typeOfLivestock
+      invalidInputMessage.typesOfPoultry = []
+
+      expectFalseyResultAndValidationErrorSetInLogBinding(invalidInputMessage)
     })
   })
 
