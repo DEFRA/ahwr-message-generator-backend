@@ -174,10 +174,6 @@ async function doStuff(server) {
 
 Helper methods are also available in `/src/helpers/mongo-lock.js`.
 
-### Proxy
-
-We are using forward-proxy which is set up by default.
-
 ## Docker
 
 ### Development image
