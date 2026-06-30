@@ -41,6 +41,33 @@ criteria that could be triggers for generating outbound comms requests.
 - Saves an audit to the database of the request
 - Forwards request on to the FCP SFD Comms component via an output SNS topic
 
+# Architecture
+
+The service is triggered by inbound events (SNS → SQS), enriches and audits each request, then
+forwards an outbound comms request to the FCP SFD Comms proxy via SNS.
+
+```mermaid
+architecture-beta
+    group cdp(cloud)[CDP]
+
+    service snsin(internet)[Source SNS Topics] in cdp
+    service sqs(server)[Message Generator SQS Queue] in cdp
+    service app(server)[Message Generator Backend] in cdp
+    service mongo(database)[MongoDB Audit Store] in cdp
+    service s3(disk)[Document S3 Bucket] in cdp
+    service appapi(internet)[Application Backend API] in cdp
+    service snsout(internet)[SFD Comms SNS Topic] in cdp
+    service sfd(cloud)[FCP SFD Comms Proxy]
+
+    snsin:R --> L:sqs
+    sqs:R --> L:app
+    app:T --> B:appapi
+    app:B --> T:mongo
+    app:B --> T:s3
+    app:R --> L:snsout
+    snsout:R --> L:sfd
+```
+
 ## Requirements
 
 ### pre-commit
