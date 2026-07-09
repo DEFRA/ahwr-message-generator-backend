@@ -100,7 +100,7 @@ describe('getMessageGenerationHandler', () => {
       new Error('Failed to retrieve message generation by claim reference')
     )
 
-    expect(
+    await expect(
       getMessageGenerationHandler(
         { ...request, query: { claimReference: 'REBC-J9AR-KILQ' } },
         mockH
@@ -113,7 +113,7 @@ describe('getMessageGenerationHandler', () => {
       new Error('Failed to retrieve message generation by agreement reference')
     )
 
-    expect(
+    await expect(
       getMessageGenerationHandler(
         { ...request, query: { agreementReference: 'IAHW-ABC1-1061' } },
         mockH
@@ -126,7 +126,7 @@ describe('getMessageGenerationHandler', () => {
       Boom.badRequest('Failed to retrieve message generation by claim reference')
     )
 
-    expect(
+    await expect(
       getMessageGenerationHandler(
         { ...request, query: { claimReference: 'REBC-J9AR-KILQ' } },
         mockH
@@ -139,7 +139,7 @@ describe('getMessageGenerationHandler', () => {
       Boom.badRequest('Failed to retrieve message generation by agreement reference')
     )
 
-    expect(
+    await expect(
       getMessageGenerationHandler(
         { ...request, query: { agreementReference: 'IAHW-ABC1-1061' } },
         mockH
