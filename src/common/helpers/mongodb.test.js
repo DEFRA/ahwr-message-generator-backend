@@ -2,9 +2,11 @@ import { createServer } from '../../server.js'
 import { createMessageGenerationIndexes } from '../../repositories/message-generation-repository.js'
 
 const mockCreateIndex = jest.fn()
+const mockCreateIndexes = jest.fn()
 const mockCollection = jest.fn(() => {
   return {
-    createIndex: mockCreateIndex
+    createIndex: mockCreateIndex,
+    createIndexes: mockCreateIndexes
   }
 })
 const mockDb = jest.fn((databaseName) => {
