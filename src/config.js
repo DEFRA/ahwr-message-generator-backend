@@ -158,12 +158,6 @@ const config = convict({
       }
     }
   },
-  cdpEnvironment: {
-    doc: 'The CDP environment the app is running in. With the addition of "local" for local development',
-    format: ['local', 'infra-dev', 'management', 'dev', 'test', 'perf-test', 'ext-test', 'prod'],
-    default: 'local',
-    env: 'ENVIRONMENT'
-  },
   inboundMessage: {
     types: {
       documentCreated: {
@@ -293,13 +287,6 @@ const config = convict({
         env: 'MONGO_READ_PREFERENCE'
       }
     }
-  },
-  httpProxy: {
-    doc: 'HTTP Proxy URL',
-    format: String,
-    nullable: true,
-    default: null,
-    env: 'HTTP_PROXY'
   },
   isMetricsEnabled: {
     doc: 'Enable metrics reporting',
