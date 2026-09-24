@@ -7,7 +7,7 @@ const email = joi.string().email({ tlds: false })
 const CLAIM_REFERENCE_LENGTH = 14
 
 const submitSFDSchema = joi.object({
-  crn: tenDigitId,
+  crn: tenDigitId.required(),
   sbi: nineDigitId.required(),
   agreementReference: joi.string().required(),
   claimReference: joi.string().max(CLAIM_REFERENCE_LENGTH),

@@ -141,4 +141,22 @@ describe('validateSFDSchema', () => {
 
     expect(result).toBe(false)
   })
+
+  test('should return false for invalid crn', () => {
+    const invalidEvent = {
+      crn: null,
+      sbi: '106705779',
+      agreementReference: 'AHWR-0AD3-3322',
+      claimReference: 'TEMP-O9UD-22F6',
+      notifyTemplateId: 'e8e6d94b-bc87-4f67-8f5b-845bb5c5a5b5',
+      emailReplyToId: 'e8e6d94b-bc87-4f67-8f5b-845bb5c5aaaa',
+      emailAddress: 'user@example.com',
+      customParams: {},
+      dateTime: new Date().toISOString()
+    }
+
+    const result = validateSFDSchema(invalidEvent, mockLogger)
+
+    expect(result).toBe(false)
+  })
 })
