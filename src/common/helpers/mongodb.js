@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { LockManager } from 'mongo-locks'
 import { createMessageGenerationIndexes } from '../../repositories/message-generation-repository.js'
-
+import os from 'node:os'
 export const mongoDb = {
   plugin: {
     name: 'mongodb',
@@ -10,7 +10,10 @@ export const mongoDb = {
       server.logger.info('Setting up MongoDb')
 
       const client = await MongoClient.connect(options.mongoUrl, {
-        ...options.mongoOptions
+        ...options.mongoOptions,
+        runtimeAdapters: {
+          os: os
+        }
       })
 
       const databaseName = options.databaseName
