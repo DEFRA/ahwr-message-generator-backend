@@ -61,6 +61,7 @@ describe('process new agreement email message', () => {
       customParams: {
         reference: agreementReference,
         name: 'Willow Farm',
+        sbi: '106705779',
         link_to_file: {
           confirm_email_before_download: null,
           file: 'UERGLTEuNCB0ZXN0IHBkZiBjb250ZW50',

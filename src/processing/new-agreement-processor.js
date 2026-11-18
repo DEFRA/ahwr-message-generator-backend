@@ -32,7 +32,7 @@ export const processNewAgreementCreated = async (message, logger, db) => {
     const blob = await fetchBlob(logger, documentLocation)
 
     const requestParams = {
-      ...generateDefaultRequestParams(applicationReference, orgName, userType, blob),
+      ...generateDefaultRequestParams(applicationReference, orgName, sbi, userType, blob),
       logger,
       sbi,
       crn
@@ -152,11 +152,12 @@ const getAgreementTemplateId = (reference, userType) => {
   return templateId
 }
 
-const generateDefaultRequestParams = (reference, name, userType, blob) => {
+const generateDefaultRequestParams = (reference, name, sbi, userType, blob) => {
   const noReplyEmailReplyToId = config.get('notify.replyToIdNoReply')
   const personalisation = {
     name,
     reference,
+    sbi,
     link_to_file: prepareUpload(blob)
   }
   const templateId = getAgreementTemplateId(reference, userType)
