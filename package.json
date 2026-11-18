@@ -45,7 +45,7 @@
     "hapi-pino": "13.0.0",
     "hapi-pulse": "4.0.0",
     "http-status-codes": "2.3.0",
-    "joi": "18.2.9",
+    "joi": "18.3.2",
     "mongo-locks": "3.2.0",
     "mongodb": "7.7.0",
     "pino": "9.14.0",
@@ -80,5 +80,9 @@
     "*.{json,md}": [
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "joi": "18.3.2",
+    "@hapi/content": "6.0.3"
   }
 }
